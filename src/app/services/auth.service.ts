@@ -5,7 +5,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable, from, pipe } from 'rxjs';
 import { switchMap, catchError, map } from 'rxjs/operators';
 import { FacebookService, LoginResponse } from 'ngx-facebook';
-import { API_SERVER, API_PATH } from '../params';
+import { API_PATH } from '../params';
 const jwt = new JwtHelperService();
 
 @Injectable()
@@ -17,6 +17,21 @@ export class AuthService {
     fb.init(FB_PARAMS);
     // Get JWT token from local storage if exist
     this.token = localStorage.getItem(LOCALSTORAGE_TOKEN_KEY) || null;
+  }
+
+  /**
+   * Return token
+   */
+  getToken(): string {
+    return this.token;
+  }
+
+  /**
+   * Return user ID from token
+   */
+  getUserID(): number {
+    const decoded = jwt.decodeToken(this.token);
+    return decoded._id_user;
   }
 
   /**
@@ -46,7 +61,7 @@ export class AuthService {
     const headers: HttpHeaders = new HttpHeaders({
       Authorization: 'Bearer ' + fbToken
     });
-    return this.http.get(API_SERVER + API_PATH + 'utils/auth', { headers });
+    return this.http.get(API_PATH + 'utils/auth', { headers });
   }
 
   /**

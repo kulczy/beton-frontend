@@ -4,8 +4,7 @@ import { InitParams, LoginOptions } from 'ngx-facebook';
 export const LOCALSTORAGE_TOKEN_KEY = 'beton:token';
 
 // API paths
-export const API_SERVER = 'http://localhost:3000/';
-export const API_PATH = 'v1/api/';
+export const API_PATH = 'http://localhost:3000/v1/api/';
 
 // Facebook App Params
 export const FB_PARAMS: InitParams = {
