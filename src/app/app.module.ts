@@ -10,9 +10,12 @@ import { baseRoutes } from './app.routes';
 
 // Services nad guards
 import { AuthService } from './services/auth.service';
+import { AccessService } from './services/access.service';
 import { TeamStoreService } from './services/team.store.service';
 import { TeamApiService } from './services/team.api.service';
 import { AuthGuard } from './guards/auth.guard';
+import { AdminGuard } from './guards/admin.guard';
+import { MemberGuard } from './guards/member.guard';
 
 // Utils
 import { TokenInterceptor } from './utils/token.interceptor';
@@ -58,9 +61,12 @@ import { InputWrapperComponent } from './shared/input-wrapper/input-wrapper.comp
   ],
   providers: [
     AuthService,
+    AccessService,
     TeamStoreService,
     TeamApiService,
     AuthGuard,
+    AdminGuard,
+    MemberGuard,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

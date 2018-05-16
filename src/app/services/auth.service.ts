@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { LOCALSTORAGE_TOKEN_KEY, FB_OPTIONS, FB_PARAMS } from '../params';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -12,7 +13,11 @@ const jwt = new JwtHelperService();
 export class AuthService {
   private token: string;
 
-  constructor(private fb: FacebookService, private http: HttpClient) {
+  constructor(
+    private fb: FacebookService,
+    private http: HttpClient,
+    private router: Router
+  ) {
     // Init facebook SDK
     fb.init(FB_PARAMS);
     // Get JWT token from local storage if exist
@@ -23,6 +28,10 @@ export class AuthService {
    * Return token
    */
   getToken(): string {
+    if (!this.isLoggedIn()) {
+      this.router.navigate(['/']);
+      return '';
+    }
     return this.token;
   }
 

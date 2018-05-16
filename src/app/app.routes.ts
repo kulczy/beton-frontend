@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 
 // Services and guards
 import { AuthGuard } from './guards/auth.guard';
+import { AdminGuard } from './guards/admin.guard';
+import { MemberGuard } from './guards/member.guard';
 
 // Components
 import { AppComponent } from './app.component';
@@ -25,7 +27,7 @@ const teamSubRoutes: Routes = [
 // Team routes /app/team/:URL/
 const teamRoutes: Routes = [
   { path: '', component: TeamGamesComponent, children: teamSubRoutes }, // app/team/:URL
-  { path: 'edit', component: TeamEditComponent } // app/team/:URL/edit
+  { path: 'edit', component: TeamEditComponent, canActivate: [AdminGuard] } // app/team/:URL/edit
 ];
 
 // Teams routes /app/teams/
@@ -36,7 +38,7 @@ const teamsSubroutes: Routes = [
 // App routes - /app/
 const appRoutes: Routes = [
   { path: '', component: TeamsComponent, children: teamsSubroutes }, // app
-  { path: 'team/:url', component: TeamComponent, children: teamRoutes }, // app/team/:URL
+  { path: 'team/:url', component: TeamComponent, canActivate: [MemberGuard], children: teamRoutes }, // app/team/:URL
   { path: 'account', component: AccountComponent } // app/account
 ];
 
