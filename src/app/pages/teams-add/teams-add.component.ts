@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Team } from '../../models';
 import { TeamApiService } from '../../services/team.api.service';
-import { TeamStoreService } from '../../services/team.store.service';
+import { TeamsStoreService } from '../../services/teams.store.service';
 
 @Component({
   selector: 'app-teams-add',
@@ -19,7 +19,7 @@ export class TeamsAddComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private teamApiService: TeamApiService,
-    private teamStoreService: TeamStoreService,
+    private teamsStoreService: TeamsStoreService,
     private router: Router
   ) {}
 
@@ -51,7 +51,7 @@ export class TeamsAddComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.unsubscribe))
         .subscribe((resp) => {
           const createdTeam = { team: resp.newTeam, ...resp.newMember }; // Create new member
-          this.teamStoreService.setTeams([createdTeam]); // Add new member to store
+          this.teamsStoreService.addTeams([createdTeam]); // Add new member to store
           this.isLoading = false; // Stop loader
           this.router.navigate(['/app']); // Redirect
         });

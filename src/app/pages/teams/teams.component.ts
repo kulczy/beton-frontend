@@ -3,7 +3,7 @@ import { HttpResponse } from '@angular/common/http';
 import { Subject, pipe } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TeamApiService } from '../../services/team.api.service';
-import { TeamStoreService } from '../../services/team.store.service';
+import { TeamsStoreService } from '../../services/teams.store.service';
 import { Member } from '../../models';
 
 @Component({
@@ -16,12 +16,12 @@ export class TeamsComponent implements OnInit, OnDestroy {
 
   constructor(
     private teamApiService: TeamApiService,
-    private teamStoreService: TeamStoreService
+    private teamsStoreService: TeamsStoreService
   ) {}
 
   ngOnInit() {
     // Subscribe to teams store
-    this.teamStoreService
+    this.teamsStoreService
       .getTeams()
       .pipe(takeUntil(this.unsubscribe))
       .subscribe((teams: Member[]) => {
@@ -33,7 +33,7 @@ export class TeamsComponent implements OnInit, OnDestroy {
       .getTeams()
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(resp => {
-        this.teamStoreService.setTeams(resp.resp);
+        this.teamsStoreService.setTeams(resp.resp);
       });
   }
 

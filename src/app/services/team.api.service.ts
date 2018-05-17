@@ -21,11 +21,22 @@ export class TeamApiService {
   }
 
   /**
-   * Get all user membership with team data
+   * Get all user membership with teams data
    */
   getTeams(): Observable<any> {
     return this.http
       .get(`${API_PATH}membershipfull/${this.authService.getUserID()}`)
+      .pipe(catchError((err, caught) => empty()));
+  }
+
+  /**
+   * Get full info of the team
+   * with members, games, types
+   * @param teamURL team url
+   */
+  getTeamFull(teamURL): Observable<any> {
+    return this.http
+      .get(`${API_PATH}full_team/${teamURL}`)
       .pipe(catchError((err, caught) => empty()));
   }
 }

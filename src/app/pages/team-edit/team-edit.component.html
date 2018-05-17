@@ -1,3 +1,13 @@
 <p>
   team-edit works!
 </p>
+
+<form [formGroup]="formControl" (ngSubmit)="onSubmit()">
+  <input class="form-control" formControlName="email" name="email">
+  <p *ngIf="memberAddFormMsg">{{ memberAddFormMsg }}</p>
+  <button [disabled]="!formControl.valid" type="submit" class="btn btn-primary">
+    {{ isLoading ? 'loading...' : 'Invite' }}
+  </button>
+</form>
+
+<app-members-list [members]="team.members"></app-members-list>

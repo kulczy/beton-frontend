@@ -11,6 +11,9 @@ import { baseRoutes } from './app.routes';
 // Services nad guards
 import { AuthService } from './services/auth.service';
 import { AccessService } from './services/access.service';
+import { UserApiService } from './services/user.api.service';
+import { MemberApiService } from './services/member.api.service';
+import { TeamsStoreService } from './services/teams.store.service';
 import { TeamStoreService } from './services/team.store.service';
 import { TeamApiService } from './services/team.api.service';
 import { AuthGuard } from './guards/auth.guard';
@@ -33,6 +36,7 @@ import { TeamGamesEditComponent } from './pages/team-games-edit/team-games-edit.
 import { TeamsComponent } from './pages/teams/teams.component';
 import { TeamsAddComponent } from './pages/teams-add/teams-add.component';
 import { InputWrapperComponent } from './shared/input-wrapper/input-wrapper.component';
+import { MembersListComponent } from './pages/team-edit/members-list/members-list.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +51,8 @@ import { InputWrapperComponent } from './shared/input-wrapper/input-wrapper.comp
     TeamGamesEditComponent,
     TeamsComponent,
     TeamsAddComponent,
-    InputWrapperComponent
+    InputWrapperComponent,
+    MembersListComponent
   ],
   imports: [
     BrowserModule,
@@ -62,11 +67,14 @@ import { InputWrapperComponent } from './shared/input-wrapper/input-wrapper.comp
   providers: [
     AuthService,
     AccessService,
+    TeamsStoreService,
     TeamStoreService,
     TeamApiService,
+    MemberApiService,
     AuthGuard,
     AdminGuard,
     MemberGuard,
+    UserApiService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

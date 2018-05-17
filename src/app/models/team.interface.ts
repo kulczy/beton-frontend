@@ -6,4 +6,6 @@ export interface Team {
   updated_at?: any;
   url?: string;
   name?: string;
+  members?: Member[];
+  games?: Game[];
 }

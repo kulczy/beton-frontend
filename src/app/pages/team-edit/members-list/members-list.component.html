@@ -1,0 +1,23 @@
+<h2>Members</h2>
+
+<table>
+  <tr *ngFor="let member of members" style="border-bottom: 1px solid #eee;">
+    <td style="width: 300px;">{{ member.user.username }}<br><small>{{ member.user.email }}</small></td>
+    <td style="width: 200px;">{{ member.is_member ? 'is member' : 'not member' }}</td>
+
+    <td style="width: 300px;">
+      <div *ngIf="member.is_admin && member.is_member">
+        <span>is admin</span>
+        <button *ngIf="!member.is_creator" (click)="onUpdateMember(member._id_member, member.id_team, 0)" class="btn btn-link" type="button">remove admin</button>
+      </div>
+      <div *ngIf="!member.is_admin && member.is_member">
+        <span>is not admin</span>
+        <button *ngIf="!member.is_creator" (click)="onUpdateMember(member._id_member, member.id_team, 1)" class="btn btn-link" type="button">make admin</button>
+      </div>
+    </td>
+
+    <td style="width: 200px;">
+        <button *ngIf="!member.is_creator" (click)="onDeleteMember(member._id_member, member.id_team)" class="btn btn-link" type="button">remove member</button>
+    </td>
+  </tr>
+</table>

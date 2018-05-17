@@ -1,20 +1,20 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Member } from '../models';
+import { Member, Team } from '../models';
 
 @Injectable()
 export class TeamStoreService {
-  private teams: BehaviorSubject<Member[]>;
+  private team: BehaviorSubject<Team>;
 
   constructor() {
-    this.teams = new BehaviorSubject([]);
+    this.team = new BehaviorSubject({});
   }
 
-  getTeams(): BehaviorSubject<Member[]> {
-    return this.teams;
+  getTeam(): BehaviorSubject<Team> {
+    return this.team;
   }
 
-  setTeams(teams: Member[]): void {
-    this.teams.next(teams.concat(this.teams.getValue()));
+  setTeam(team: Team): void {
+    this.team.next(team);
   }
 }
