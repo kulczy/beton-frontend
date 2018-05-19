@@ -7,15 +7,12 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './layout.component.html'
 })
 export class LayoutComponent implements OnInit {
+  constructor(private authService: AuthService, private router: Router) {}
 
-  constructor(private authService: AuthService, private router: Router) { }
-
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   onLogout(): void {
     this.authService.logout();
     this.router.navigate(['/']);
   }
-
 }

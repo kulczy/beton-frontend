@@ -20,9 +20,14 @@ export class TeamsStoreService {
   /**
    * Add team to array
    * @param teams
+   * @param start add to begin or and of the array
    */
-  addTeams(teams: Member[]): void {
-    this.teams.next(teams.concat(this.teams.getValue()));
+  addTeams(teams: Member[], start: boolean = true): void {
+    if (start) {
+      this.teams.next(teams.concat(this.teams.getValue()));
+    } else {
+      this.teams.next(this.teams.getValue().concat(teams));
+    }
   }
 
   /**
@@ -31,5 +36,12 @@ export class TeamsStoreService {
    */
   setTeams(teams: Member[]): void {
     this.teams.next(teams);
+  }
+
+  /**
+   * Clear teams array
+   */
+  clearTeams(): void {
+    this.teams.next([]);
   }
 }

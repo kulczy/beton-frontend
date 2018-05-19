@@ -10,9 +10,23 @@ import { catchError } from 'rxjs/operators';
 export class UserApiService {
   constructor(private http: HttpClient) {}
 
-  getUserByEmail(email): Observable<any> {
+  /**
+   * Get user by email
+   * @param email
+   */
+  getUserByEmail(email: string): Observable<any> {
     return this.http
       .get(`${API_PATH}user/${email}`)
+      .pipe(catchError((err, caught) => of(false)));
+  }
+
+  /**
+   * Get user by ID
+   * @param userID
+   */
+  getUserByID(userID: number): Observable<any> {
+    return this.http
+      .get(`${API_PATH}user/${userID}`)
       .pipe(catchError((err, caught) => of(false)));
   }
 }

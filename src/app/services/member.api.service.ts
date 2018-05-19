@@ -11,26 +11,29 @@ export class MemberApiService {
 
   /**
    * Insert new member
-   * @param teamURL
-   * @param userEmail
+   * @param id_team ID of the team
+   * @param email invited user email
+   * @param inviting_id inviting user ID
    */
-  addMember(teamID: number, userEmail: string): Observable<any> {
+  addMember(id_team: number, email: string, inviting_id: number): Observable<any> {
     return this.http
-      .post(`${API_PATH}member`, { id_team: teamID, email: userEmail })
+      .post(`${API_PATH}member`, { id_team, email, inviting_id })
       .pipe(catchError((err, caught) => of(false)));
   }
 
   /**
    * Remove member from the team
-   * @param memberID member ID
-   * @param teamID team ID to verify
+   * @param userID
+   * @param teamID
    * if sender is part of the team
    */
-  deleteMember(memberID: number, teamID: any): Observable<any> {
-    const params = new HttpParams().set('id_team', teamID);
+  deleteMember(userID: any, teamID: any): Observable<any> {
+    const params = new HttpParams()
+      .set('id_user', userID)
+      .set('id_team', teamID);
 
     return this.http
-      .delete(`${API_PATH}member/${memberID}`, { params })
+      .delete(`${API_PATH}member`, { params })
       .pipe(catchError((err, caught) => of(false)));
   }
 

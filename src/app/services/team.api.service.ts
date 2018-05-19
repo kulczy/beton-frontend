@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { API_PATH } from '../params';
 import { Team, Member } from '../models/index';
 import { Observable, empty, pipe } from 'rxjs';
@@ -22,10 +22,26 @@ export class TeamApiService {
 
   /**
    * Get all user membership with teams data
+   * @param limit limit query teams
+   * @param offset offset
+   * @param is_member if set to 1, get teams where user is member
+   * if set to 0, get teams where user is not member
+   * if empty, get all teams
    */
-  getTeams(): Observable<any> {
+  getTeams(
+    limit: any = '',
+    offset: any = '',
+    is_member: any = ''
+  ): Observable<any> {
+    const params = new HttpParams()
+      .set('limit', limit)
+      .set('offset', offset)
+      .set('is_member', is_member);
+
     return this.http
-      .get(`${API_PATH}membershipfull/${this.authService.getUserID()}`)
+      .get(`${API_PATH}membershipfull/${this.authService.getUserID()}`, {
+        params
+      })
       .pipe(catchError((err, caught) => empty()));
   }
 
@@ -37,6 +53,27 @@ export class TeamApiService {
   getTeamFull(teamURL): Observable<any> {
     return this.http
       .get(`${API_PATH}full_team/${teamURL}`)
+      .pipe(catchError((err, caught) => empty()));
+  }
+
+  /**
+   * Update team data
+   * @param teamID
+   * @param teamData
+   */
+  updateTeam(teamID: number, teamData: Team): Observable<any> {
+    return this.http
+      .patch(`${API_PATH}team/${teamID}`, teamData)
+      .pipe(catchError((err, caught) => empty()));
+  }
+
+  /**
+   * Delete team
+   * @param teamID
+   */
+  deleteTeam(teamID: number): Observable<any> {
+    return this.http
+      .delete(`${API_PATH}team/${teamID}`)
       .pipe(catchError((err, caught) => empty()));
   }
 }

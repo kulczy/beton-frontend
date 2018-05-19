@@ -37,6 +37,8 @@ import { TeamsComponent } from './pages/teams/teams.component';
 import { TeamsAddComponent } from './pages/teams-add/teams-add.component';
 import { InputWrapperComponent } from './shared/input-wrapper/input-wrapper.component';
 import { MembersListComponent } from './pages/team-edit/members-list/members-list.component';
+import { TeamEditCardComponent } from './pages/team-edit/team-edit-card/team-edit-card.component';
+import { NotificationsComponent } from './shared/notifications/notifications.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +54,9 @@ import { MembersListComponent } from './pages/team-edit/members-list/members-lis
     TeamsComponent,
     TeamsAddComponent,
     InputWrapperComponent,
-    MembersListComponent
+    MembersListComponent,
+    TeamEditCardComponent,
+    NotificationsComponent
   ],
   imports: [
     BrowserModule,

@@ -13,6 +13,7 @@ import { Member } from '../../models';
 export class TeamsComponent implements OnInit, OnDestroy {
   private unsubscribe = new Subject<void>();
   teams: Member[];
+  isAllTeamsLoaded = true;
 
   constructor(
     private teamApiService: TeamApiService,
@@ -30,15 +31,31 @@ export class TeamsComponent implements OnInit, OnDestroy {
 
     // Get teams from API
     this.teamApiService
-      .getTeams()
+      .getTeams('9', '', '1')
       .pipe(takeUntil(this.unsubscribe))
-      .subscribe(resp => {
+      .subscribe((resp) => {
+        this.isAllTeamsLoaded = resp.resp.length >= resp.count ? true : false; // Check if all teams loaded
         this.teamsStoreService.setTeams(resp.resp);
       });
   }
 
   ngOnDestroy(): void {
+    this.teamsStoreService.clearTeams();
     this.unsubscribe.next();
     this.unsubscribe.complete();
+  }
+
+  /**
+   * Load more teams to array
+   */
+  onLoadMoreTeams(): void {
+    this.teamApiService
+      .getTeams('9', this.teams.length, '1')
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe((resp) => {
+        this.isAllTeamsLoaded =
+          resp.resp.length + this.teams.length >= resp.count ? true : false; // Check if all teams loaded
+        this.teamsStoreService.addTeams(resp.resp, false);
+      });
   }
 }

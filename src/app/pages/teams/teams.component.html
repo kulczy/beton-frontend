@@ -1,17 +1,25 @@
-<h1>Teams</h1>
-<button routerLink="/app/teams/add" class="btn btn-success" type="button">Add new team</button>
-
-<div class="container">
-  <div class="row">
-    <div *ngFor="let team of teams" class="col-3 mb-3">
-      <div class="card">
-        <div [routerLink]="['./team', team.team.url]" class="card-body">
-            {{ team.team.name }}
-            <p><small>{{ team.is_member ? 'jest memberem' : 'nie jest memberem' }}</small></p>
+<div *ngIf="teams">
+    <h1>Teams</h1>
+    <button routerLink="/app/teams/add" class="btn btn-success" type="button">Add new team</button>
+    
+    <div class="container">
+      <div class="row">
+        <div *ngFor="let team of teams" class="col-3 mb-3">
+          <div class="card">
+            <div [routerLink]="['./team', team.team.url]" class="card-body">
+                {{ team.team.name }}
+                <p>
+                  <small>{{ team.is_member ? 'jest memberem' : 'nie jest memberem' }}</small>
+                  <small *ngIf="team.is_admin"> __ *admin</small>
+                </p>
+            </div>
+          </div>
         </div>
       </div>
+      <div *ngIf="!isAllTeamsLoaded">
+        <button (click)="onLoadMoreTeams()" class="btn btn-default" type="button">load more</button>
+      </div>
     </div>
-  </div>
+    
+    <router-outlet></router-outlet>
 </div>
-
-<router-outlet></router-outlet>

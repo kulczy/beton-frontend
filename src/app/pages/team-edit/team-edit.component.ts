@@ -1,11 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Member, Team } from '../../models';
-import { UserApiService } from '../../services/user.api.service';
+import { Team } from '../../models';
 import { TeamStoreService } from '../../services/team.store.service';
-import { MemberApiService } from '../../services/member.api.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-team-edit',
@@ -13,16 +11,12 @@ import { MemberApiService } from '../../services/member.api.service';
 })
 export class TeamEditComponent implements OnInit, OnDestroy {
   private unsubscribe = new Subject<void>();
-  formControl: FormGroup;
-  memberAddFormMsg: string;
-  isLoading: boolean;
   team: Team;
+  allowAdminDelete: boolean;
 
   constructor(
-    private fb: FormBuilder,
-    private userApiService: UserApiService,
     private teamStoreService: TeamStoreService,
-    private memberApiService: MemberApiService
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -31,30 +25,22 @@ export class TeamEditComponent implements OnInit, OnDestroy {
       .getTeam()
       .pipe(takeUntil(this.unsubscribe))
       .subscribe((team: Team) => {
-        if (team) {
+        if (team.hasOwnProperty('name')) {
           this.team = team;
         }
       });
 
-    // Init form
-    this.formControl = this.fb.group({
-      email: ['', [Validators.email, Validators.required]]
-    });
+    // Get admins delete permission
+    this.teamStoreService
+      .allowAdminDelete()
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe((allow: boolean) => {
+        this.allowAdminDelete = allow;
+      });
   }
 
   ngOnDestroy(): void {
     this.unsubscribe.next();
     this.unsubscribe.complete();
-  }
-
-  onSubmit(): void {
-    if (this.formControl.valid) {
-      this.memberApiService
-        .addMember(this.team._id_team, this.formControl.controls.email.value)
-        .pipe(takeUntil(this.unsubscribe))
-        .subscribe((resp) => {
-          this.memberAddFormMsg = resp.msg;
-        });
-    }
   }
 }

@@ -1,6 +1,11 @@
-<nav>
-  <div routerLink="./">Games</div>
-  <div routerLink="./edit">Edit</div>
-</nav>
-
-<router-outlet></router-outlet>
+<div *ngIf="team">
+  <nav>
+    <div routerLink="./">Games</div>
+    <div *ngIf="teamCurrentMember.is_admin" routerLink="./edit">Edit</div>
+    <div *ngIf="!teamCurrentMember.is_admin" (click)="onLeaveTeam()">Leave the team</div>
+  </nav>
+  
+  <hr>
+  
+  <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,15 @@
+<div class="card mt-5">
+    <div class="card-header">Team edit</div>
+    <div class="card-body">
+
+        <form [formGroup]="formControl" (ngSubmit)="onSubmit()">
+            <input class="form-control" formControlName="name" name="name">
+            <button [disabled]="!formControl.valid" type="submit" class="btn btn-primary">
+                {{ isLoading ? 'loading...' : 'Save' }}
+            </button>
+        </form>
+
+        <button (click)="onDelete()" class="btn btn-danger" type="button">Delete</button>
+
+    </div>
+</div>
