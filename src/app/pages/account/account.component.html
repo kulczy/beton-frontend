@@ -1,3 +1,19 @@
-<p>
-  account works!
-</p>
+<div *ngIf="user">
+  <h1>Account</h1>
+
+<form [formGroup]="formControl" (ngSubmit)="onSubmit()">
+  <div class="modal-body">                                        
+      <app-input-wrapper [value]="formControl.controls['name']" label="Username" errorMsg="Please provide a valid username (min. 3 characters).">
+          <input class="form-control" formControlName="name" type="text">
+      </app-input-wrapper>
+      <input class="form-control" formControlName="public" type="checkbox">
+  </div>
+  <div class="modal-footer">
+      <button routerLink="/app" type="button" class="btn btn-secondary">Close</button>
+      <button [disabled]="!formControl.valid" type="submit" class="btn btn-primary">
+        {{ isLoading ? 'loading...' : 'Save changes' }}
+      </button>
+  </div>
+</form>
+<button (click)="onDelete()" class="btn btn-danger" type="button">Delete account</button>
+</div>
