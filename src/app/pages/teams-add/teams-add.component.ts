@@ -6,6 +6,8 @@ import { takeUntil } from 'rxjs/operators';
 import { Team } from '../../models';
 import { TeamApiService } from '../../services/team.api.service';
 import { TeamsStoreService } from '../../services/teams.store.service';
+import { MemberApiService } from '../../services/member.api.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-teams-add',
@@ -15,18 +17,30 @@ export class TeamsAddComponent implements OnInit, OnDestroy {
   private unsubscribe = new Subject<void>();
   formControl: FormGroup;
   isLoading: boolean;
+  canCreate: string;
 
   constructor(
     private fb: FormBuilder,
     private teamApiService: TeamApiService,
     private teamsStoreService: TeamsStoreService,
+    private memberApiService: MemberApiService,
+    private authService: AuthService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
+    // Create form
     this.formControl = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]]
     });
+
+    // Check if user can create new team
+    this.memberApiService
+      .countCreatedTeams(this.authService.getUserID())
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe((resp) => {
+        this.canCreate = resp.resp ? 'yes' : 'no';
+      });
   }
 
   ngOnDestroy(): void {

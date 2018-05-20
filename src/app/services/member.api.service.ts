@@ -47,4 +47,14 @@ export class MemberApiService {
       .patch(`${API_PATH}member/${memberID}`, data)
       .pipe(catchError((err, caught) => of(false)));
   }
+
+  /**
+   * Count teams that user did create
+   * @param userID
+   */
+  countCreatedTeams(userID: number): Observable<any> {
+    return this.http
+      .get(`${API_PATH}membershipcreatorcount/${userID}`)
+      .pipe(catchError((err, caught) => of(false)));
+  }
 }
