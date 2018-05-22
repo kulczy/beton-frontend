@@ -12,7 +12,7 @@
                 <form [formGroup]="formControl" (ngSubmit)="onSubmit()">
                     <div class="modal-body">                                        
                         <app-input-wrapper [value]="formControl.controls['name']" label="Name" errorMsg="Please provide a valid name (min. 3 characters).">
-                            <input class="form-control" formControlName="name">
+                            <input class="form-control" formControlName="name" type="text">
                         </app-input-wrapper>
                     </div>
                     <div class="modal-footer">

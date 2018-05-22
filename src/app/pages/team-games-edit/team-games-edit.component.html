@@ -1,3 +1,33 @@
-<p>
-  team-games-edit works!
-</p>
+<div class="modal show" tabindex="-1" role="dialog" style="display: block;">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-content">
+      <div class="modal-header">
+          <h5 class="modal-title">{{ isEdit ? 'Edit game' : 'Add game' }}</h5>
+          <button [routerLink]="['/app/team', teamURL]" type="button" class="close" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      
+      <form [formGroup]="formControl" (ngSubmit)="onSubmit()">
+        <div class="modal-body">                                                  
+          <input class="form-control" type="text" formControlName="close_at_date" placeholder="Datepicker" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY' }">          
+          <timepicker formControlName="close_at_time" [showMeridian]="isMeridian"></timepicker>
+          <input class="form-control" type="text" formControlName="player_a" placeholder="player_a">
+          <input class="form-control" type="text" formControlName="player_b" placeholder="player_b">
+          <input class="form-control" type="text" formControlName="score_a" placeholder="score_a">
+          <input class="form-control" type="text" formControlName="score_b" placeholder="score_b">
+        </div>
+        <div class="modal-footer">
+            <button [routerLink]="['/app/team', teamURL]" type="button" class="btn btn-secondary">Close</button>
+            <button [disabled]="!formControl.valid" type="submit" class="btn btn-primary">
+                {{ isLoading ? 'loading...' : 'Save changes' }}
+            </button>
+        </div>
+    </form>
+
+
+  </div>
+</div>
+</div>
+
+<div class="modal-backdrop show"></div>

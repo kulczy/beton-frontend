@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Member, Team } from '../models';
+import { Member, Team, Game } from '../models';
 import { AuthService } from './auth.service';
 
 @Injectable()
@@ -39,20 +39,20 @@ export class TeamStoreService {
   }
 
   /**
-   * Get teams
+   * Get all team data
    */
   getTeam(): BehaviorSubject<Team> {
     return this.team;
   }
 
-    /**
+  /**
    * Return admins delete permission
    */
   allowAdminDelete(): BehaviorSubject<boolean> {
     return this.teamAllowAdminDelete;
   }
 
-    /**
+  /**
    * Get current team member
    */
   currentTeamMember(): BehaviorSubject<Member> {
@@ -72,5 +72,14 @@ export class TeamStoreService {
    */
   clearTeam(): void {
     this.team.next({});
+  }
+
+  /**
+   * Return game by ID in team object
+   * @param gameID
+   */
+  findGame(gameID): Game {
+    const allGames = this.team.getValue().games;
+    return allGames.find((x) => x._id_game === gameID);
   }
 }

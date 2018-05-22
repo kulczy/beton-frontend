@@ -1,5 +1,20 @@
-<p>
-  team-games works!
-</p>
+<div *ngIf="team">
+    <h1>Games</h1>
+
+    <button routerLink="./game" class="btn btn-primary" type="button">Add new game</button>
+
+    <div>
+      <!-- Left -->
+      <div>
+        <div *ngFor="let game of team.games">
+          {{ game.player_a }} - {{ game.player_b }} <u [routerLink]="['./game', game._id_game]">edit</u>
+        </div>
+      </div>
+      <!-- Rigth -->
+      <div>
+        <div *ngFor="let game of team.games">Wyniki tu</div>
+      </div>
+    </div>
+</div>
 
 <router-outlet></router-outlet>

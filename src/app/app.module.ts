@@ -5,8 +5,14 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FacebookModule } from 'ngx-facebook';
 
+
 // Routes
 import { baseRoutes } from './app.routes';
+
+// Ngx
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { TimepickerModule } from 'ngx-bootstrap/timepicker';
+
 
 // Services nad guards
 import { AuthService } from './services/auth.service';
@@ -16,6 +22,7 @@ import { MemberApiService } from './services/member.api.service';
 import { TeamsStoreService } from './services/teams.store.service';
 import { TeamStoreService } from './services/team.store.service';
 import { TeamApiService } from './services/team.api.service';
+import { GameApiService } from './services/game.api.service';
 import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard';
 import { MemberGuard } from './guards/member.guard';
@@ -66,7 +73,9 @@ import { NotificationsComponent } from './shared/notifications/notifications.com
     ),
     HttpClientModule,
     ReactiveFormsModule,
-    FacebookModule.forRoot()
+    FacebookModule.forRoot(),
+    BsDatepickerModule.forRoot(),
+    TimepickerModule.forRoot()
   ],
   providers: [
     AuthService,
@@ -74,6 +83,7 @@ import { NotificationsComponent } from './shared/notifications/notifications.com
     TeamsStoreService,
     TeamStoreService,
     TeamApiService,
+    GameApiService,
     MemberApiService,
     AuthGuard,
     AdminGuard,
