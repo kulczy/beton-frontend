@@ -1,18 +1,29 @@
 <div *ngIf="team">
-    <h1>Games</h1>
+    <h1>Games</h1>    
 
-    <button routerLink="./game" class="btn btn-primary" type="button">Add new game</button>
-
-    <div>
+    <div class="d-flex">
       <!-- Left -->
-      <div>
-        <div *ngFor="let game of team.games">
+      <div style="width: 300px">
+          <div style="height: 80px; border-bottom: 1px solid #eee">
+              <button routerLink="./game" class="btn btn-primary" type="button">Add new game</button>
+          </div>
+        <div *ngFor="let game of team.games" style="height: 120px; border-bottom: 1px solid #eee">
           {{ game.player_a }} - {{ game.player_b }} <u [routerLink]="['./game', game._id_game]">edit</u>
         </div>
       </div>
       <!-- Rigth -->
       <div>
-        <div *ngFor="let game of team.games">Wyniki tu</div>
+        <div style="height: 80px; border-bottom: 1px solid #eee">
+          <div *ngFor="let member of team.members" style="width: 60px" style="display: inline-block; width: 250px; padding: 0 30px">
+            {{ member.user.username }} (id: {{ member.user._id_user }})
+          </div>
+        </div>
+        <div *ngFor="let game of team.games" style="height: 120px; border-bottom: 1px solid #eee">
+          <div *ngFor="let member of team.members" style="display: inline-block; width: 250px; padding: 0 30px">
+            <app-type *ngIf="currentUserID === member.user._id_user" [type]="getType(member.user._id_user, game._id_game)" [teamID]="team._id_team" [gameID]="game._id_game"></app-type>
+            <div *ngIf="currentUserID !== member.user._id_user">{{ displayType(member.user._id_user, game._id_game) }}</div>
+          </div>
+        </div>
       </div>
     </div>
 </div>

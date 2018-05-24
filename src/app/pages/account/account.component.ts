@@ -27,7 +27,10 @@ export class AccountComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // Create form
     this.formControl = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3)]],
+      name: [
+        '',
+        [Validators.required, Validators.minLength(3), Validators.maxLength(25)]
+      ],
       public: true
     });
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Game } from '../models';
+import { Game, Type } from '../models';
 import { catchError } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
 import { API_PATH } from '../params';
@@ -26,6 +26,26 @@ export class GameApiService {
   updateGame(gameID: number, gameData: Game): Observable<any> {
     return this.http
       .patch(`${API_PATH}game/${gameID}`, gameData)
+      .pipe(catchError((err, caught) => of(false)));
+  }
+
+  /**
+   * Insert new type
+   * @param typeData
+   */
+  addType(typeData: Type): Observable<any> {
+    return this.http
+      .post(`${API_PATH}type`, typeData)
+      .pipe(catchError((err, caught) => of(false)));
+  }
+
+  /**
+   * Update type
+   * @param typeData
+   */
+  updateType(typeID: number, typeData: Type): Observable<any> {
+    return this.http
+      .patch(`${API_PATH}type/${typeID}`, typeData)
       .pipe(catchError((err, caught) => of(false)));
   }
 }

@@ -1,0 +1,10 @@
+<form [formGroup]="formControl" (ngSubmit)="onSubmit()">
+  <div class="d-flex">
+      <input class="form-control" formControlName="type_a">
+      <input class="form-control" formControlName="type_b">
+  </div>
+
+  <button *ngIf="showSubmit && formControl.valid" [disabled]="!formControl.valid" type="submit" class="btn btn-primary">
+    {{ isLoading ? 'loading...' : 'Save' }}
+  </button>
+</form>

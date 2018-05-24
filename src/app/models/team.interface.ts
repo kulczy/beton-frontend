@@ -8,4 +8,5 @@ export interface Team {
   name?: string;
   members?: Member[];
   games?: Game[];
+  types?: any;
 }

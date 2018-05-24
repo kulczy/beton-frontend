@@ -46,6 +46,7 @@ import { InputWrapperComponent } from './shared/input-wrapper/input-wrapper.comp
 import { MembersListComponent } from './pages/team-edit/members-list/members-list.component';
 import { TeamEditCardComponent } from './pages/team-edit/team-edit-card/team-edit-card.component';
 import { NotificationsComponent } from './shared/notifications/notifications.component';
+import { TypeComponent } from './pages/team-games/type/type.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { NotificationsComponent } from './shared/notifications/notifications.com
     InputWrapperComponent,
     MembersListComponent,
     TeamEditCardComponent,
-    NotificationsComponent
+    NotificationsComponent,
+    TypeComponent
   ],
   imports: [
     BrowserModule,

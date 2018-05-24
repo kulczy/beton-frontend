@@ -3,7 +3,7 @@
 
 <form [formGroup]="formControl" (ngSubmit)="onSubmit()">
   <div class="modal-body">                                        
-      <app-input-wrapper [value]="formControl.controls['name']" label="Username" errorMsg="Please provide a valid username (min. 3 characters).">
+      <app-input-wrapper [value]="formControl.controls['name']" label="Username" errorMsg="Please provide a valid username (3-25 characters).">
           <input class="form-control" formControlName="name" type="text">
       </app-input-wrapper>
       <input class="form-control" formControlName="public" type="checkbox">
