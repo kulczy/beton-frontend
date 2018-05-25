@@ -2,8 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { TeamStoreService } from '../../services/team.store.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { Team, Type } from '../../models';
-import { AuthService } from '../../services/auth.service';
+import { Team, Type, Member } from '../../models';
 
 @Component({
   selector: 'app-team-games',
@@ -12,12 +11,9 @@ import { AuthService } from '../../services/auth.service';
 export class TeamGamesComponent implements OnInit, OnDestroy {
   private unsubscribe = new Subject<void>();
   team: Team;
-  currentUserID: number;
+  currentUser: Member;
 
-  constructor(
-    private teamStoreService: TeamStoreService,
-    private authService: AuthService
-  ) {}
+  constructor(private teamStoreService: TeamStoreService) {}
 
   ngOnInit(): void {
     // Get team data from store
@@ -30,8 +26,15 @@ export class TeamGamesComponent implements OnInit, OnDestroy {
         }
       });
 
-    // Get current user ID
-    this.currentUserID = this.authService.getUserID();
+    // Get current user/member object
+    this.teamStoreService
+      .currentTeamMember()
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe((resp) => {
+        if (resp.hasOwnProperty('_id_member')) {
+          this.currentUser = resp;
+        }
+      });
   }
 
   ngOnDestroy(): void {

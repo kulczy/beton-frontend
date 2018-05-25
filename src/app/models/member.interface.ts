@@ -13,4 +13,5 @@ export interface Member {
   inviting_id?: number;
   inviting_data?: number;
   team?: Team;
+  user?: any;
 }

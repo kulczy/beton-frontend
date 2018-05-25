@@ -19,6 +19,7 @@
         </div>
         <div class="modal-footer">
             <button [routerLink]="['/app/team', teamURL]" type="button" class="btn btn-secondary">Close</button>
+            <button *ngIf="gameID" (click)="onDelete()" type="button" class="btn btn-danger">Delete</button>
             <button [disabled]="!formControl.valid" type="submit" class="btn btn-primary">
                 {{ isLoading ? 'loading...' : 'Save changes' }}
             </button>

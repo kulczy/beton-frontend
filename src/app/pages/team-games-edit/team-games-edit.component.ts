@@ -57,8 +57,17 @@ export class TeamGamesEditComponent implements OnInit, OnDestroy {
           // Get game data from store
           const gameData = this.teamStoreService.findGame(gameID);
 
-          // Settings if game exist in store
-          if (gameData) {
+          // Check if current user is admin
+          const currentMember = this.teamStoreService
+            .currentTeamMember()
+            .getValue();
+
+          // Settings if game exist in store and
+          // user have rights to edit game (is admin or creator)
+          if (
+            (gameData && currentMember.is_admin) ||
+            (gameData && gameData.creator_id === currentMember.user._id_user)
+          ) {
             // Set team ID
             this.gameID = gameID;
 
@@ -74,6 +83,8 @@ export class TeamGamesEditComponent implements OnInit, OnDestroy {
               score_a: gameData.score_a,
               score_b: gameData.score_b
             });
+          } else {
+            this.router.navigate(['/app/team', this.teamURL]);
           }
         }
       });
@@ -84,6 +95,9 @@ export class TeamGamesEditComponent implements OnInit, OnDestroy {
     this.unsubscribe.complete();
   }
 
+  /**
+   * Save team
+   */
   onSubmit(): void {
     // Get full date in UTC
     const date = moment(this.formControl.controls.close_at_date.value).format(
@@ -106,7 +120,7 @@ export class TeamGamesEditComponent implements OnInit, OnDestroy {
       score_b: this.formControl.controls.score_b.value || null
     };
 
-    // Insert new team
+    // Insert new game
     if (this.formControl.valid && !this.isEdit) {
       this.gameApiService
         .addGame(newGame)
@@ -116,7 +130,7 @@ export class TeamGamesEditComponent implements OnInit, OnDestroy {
         });
     }
 
-    // Update team
+    // Update game
     if (this.formControl.valid && this.isEdit) {
       this.gameApiService
         .updateGame(this.gameID, newGame)
@@ -125,5 +139,14 @@ export class TeamGamesEditComponent implements OnInit, OnDestroy {
           this.router.navigate(['/app/team', this.teamURL]);
         });
     }
+  }
+
+  onDelete(): void {
+    this.gameApiService
+      .deleteGame(this.gameID, this.teamID)
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe((resp) => {
+        this.router.navigate(['/app/team', this.teamURL]);
+      });
   }
 }

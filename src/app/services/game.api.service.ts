@@ -30,6 +30,19 @@ export class GameApiService {
   }
 
   /**
+   * Delete game
+   * @param gameID
+   */
+  deleteGame(gameID: number, teamID: any): Observable<any> {
+    const params = new HttpParams()
+      .set('id_team', teamID);
+
+    return this.http
+      .delete(`${API_PATH}game/${gameID}`, { params })
+      .pipe(catchError((err, caught) => of(false)));
+  }
+
+  /**
    * Insert new type
    * @param typeData
    */
