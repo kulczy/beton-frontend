@@ -9,11 +9,10 @@
       <input class="form-control" formControlName="public" type="checkbox">
   </div>
   <div class="modal-footer">
-      <button routerLink="/app" type="button" class="btn btn-secondary">Close</button>
+      <button (click)="onDelete()" class="btn btn-danger" type="button">Delete account</button>
       <button [disabled]="!formControl.valid" type="submit" class="btn btn-primary">
         {{ isLoading ? 'loading...' : 'Save changes' }}
       </button>
   </div>
 </form>
-<button (click)="onDelete()" class="btn btn-danger" type="button">Delete account</button>
 </div>
