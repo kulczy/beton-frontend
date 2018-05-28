@@ -57,12 +57,12 @@ export class TeamGamesEditComponent implements OnInit, OnDestroy {
           // Get game data from store
           const gameData = this.teamStoreService.findGame(gameID);
 
-          // Check if current user is admin
+          // Get current user data
           const currentMember = this.teamStoreService
             .currentTeamMember()
             .getValue();
 
-          // Settings if game exist in store and
+          // Settings if game exist in the store and
           // user have rights to edit game (is admin or creator)
           if (
             (gameData && currentMember.is_admin) ||
@@ -96,7 +96,7 @@ export class TeamGamesEditComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Save team
+   * Save game
    */
   onSubmit(): void {
     // Get full date in UTC
@@ -141,6 +141,9 @@ export class TeamGamesEditComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Delete game
+   */
   onDelete(): void {
     this.gameApiService
       .deleteGame(this.gameID, this.teamID)

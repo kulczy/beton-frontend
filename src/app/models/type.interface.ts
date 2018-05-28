@@ -5,6 +5,7 @@ export interface Type {
   id_team?: number;
   id_game?: number;
   id_user?: number;
+  id_member?: number;
   type_a?: number;
   type_b?: number;
 }

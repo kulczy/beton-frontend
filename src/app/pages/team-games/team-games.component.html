@@ -21,7 +21,7 @@
         </div>
         <div *ngFor="let game of team.games" style="height: 120px; border-bottom: 1px solid #eee">
           <div *ngFor="let member of team.members" style="display: inline-block; width: 250px; padding: 0 30px">
-            <app-type *ngIf="currentUser.user._id_user === member.user._id_user" [type]="getType(member.user._id_user, game._id_game)" [teamID]="team._id_team" [gameID]="game._id_game"></app-type>
+            <app-type *ngIf="currentUser.user._id_user === member.user._id_user" [type]="getType(member.user._id_user, game._id_game)" [teamID]="team._id_team" [gameID]="game._id_game" [memberID]="member._id_member"></app-type>
             <div *ngIf="currentUser.user._id_user !== member.user._id_user">{{ displayType(member.user._id_user, game._id_game) }}</div>
           </div>
         </div>

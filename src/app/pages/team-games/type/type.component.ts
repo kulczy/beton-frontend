@@ -18,6 +18,7 @@ export class TypeComponent implements OnInit, OnDestroy {
   showSubmit = false;
   @Input() teamID: number;
   @Input() gameID: number;
+  @Input() memberID: number;
 
   @Input()
   set type(type: Type) {
@@ -73,7 +74,8 @@ export class TypeComponent implements OnInit, OnDestroy {
         type_a: Number(this.formControl.controls.type_a.value),
         type_b: Number(this.formControl.controls.type_b.value),
         id_team: this.teamID,
-        id_game: this.gameID
+        id_game: this.gameID,
+        id_member: this.memberID
       };
 
       // Check if record should be create or update
