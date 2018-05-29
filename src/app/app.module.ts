@@ -47,6 +47,8 @@ import { MembersListComponent } from './pages/team-edit/members-list/members-lis
 import { TeamEditCardComponent } from './pages/team-edit/team-edit-card/team-edit-card.component';
 import { NotificationsComponent } from './shared/notifications/notifications.component';
 import { TypeComponent } from './pages/team-games/type/type.component';
+import { GameTypeComponent } from './pages/team-games/game-type/game-type.component';
+import { GameInfoComponent } from './pages/team-games/game-info/game-info.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +67,9 @@ import { TypeComponent } from './pages/team-games/type/type.component';
     MembersListComponent,
     TeamEditCardComponent,
     NotificationsComponent,
-    TypeComponent
+    TypeComponent,
+    GameTypeComponent,
+    GameInfoComponent
   ],
   imports: [
     BrowserModule,

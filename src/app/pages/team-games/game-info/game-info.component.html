@@ -1,0 +1,15 @@
+<div>
+  {{ game.player_a }} - {{ game.player_b }}
+</div>
+
+<div>
+  <span *ngIf="timerService.isClosed">
+    {{ game.score_a }} : {{ game.score_b }}
+  </span>
+  <span *ngIf="!timerService.isClosed">
+    {{ timerService.clock }}
+  </span>
+</div>
+
+<u *ngIf="currentMember.user._id_user === game.creator_id && !timerService.isClosed || currentMember.is_admin" 
+  [routerLink]="['./game', game._id_game]">edit</u>

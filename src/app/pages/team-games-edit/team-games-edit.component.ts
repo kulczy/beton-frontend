@@ -66,7 +66,9 @@ export class TeamGamesEditComponent implements OnInit, OnDestroy {
           // user have rights to edit game (is admin or creator)
           if (
             (gameData && currentMember.is_admin) ||
-            (gameData && gameData.creator_id === currentMember.user._id_user)
+            (gameData &&
+              gameData.creator_id === currentMember.user._id_user &&
+              (new Date(gameData.close_at).getTime() - new Date().getTime())) > 0
           ) {
             // Set team ID
             this.gameID = gameID;

@@ -4,27 +4,40 @@
     <div class="d-flex">
       <!-- Left -->
       <div style="width: 300px">
-          <div style="height: 80px; border-bottom: 1px solid #eee">
-              <button routerLink="./game" class="btn btn-primary" type="button">Add new game</button>
-          </div>
-        <div *ngFor="let game of team.games" style="height: 120px; border-bottom: 1px solid #eee">
-          {{ game.player_a }} - {{ game.player_b }} 
-          <u *ngIf="currentUser.user._id_user === game.creator_id || currentUser.is_admin" [routerLink]="['./game', game._id_game]">edit</u>
+
+        <!-- Add game button -->
+        <div style="height: 80px; border-bottom: 1px solid #eee">
+            <button routerLink="./game" class="btn btn-primary" type="button">Add new game</button>
         </div>
+
+        <!-- Game info -->
+        <div *ngFor="let game of team.games" style="height: 120px; border-bottom: 1px solid #eee">
+          <app-game-info [gameData]="game" [currentMember]="currentUser"></app-game-info>
+        </div>
+
       </div>
+
       <!-- Rigth -->
       <div>
+
+        <!-- Members name columns -->
         <div style="height: 80px; border-bottom: 1px solid #eee">
           <div *ngFor="let member of team.members" style="width: 60px" style="display: inline-block; width: 250px; padding: 0 30px">
             {{ member.user.username }} (id: {{ member.user._id_user }})
           </div>
         </div>
+
+        <!-- Game types -->
         <div *ngFor="let game of team.games" style="height: 120px; border-bottom: 1px solid #eee">
-          <div *ngFor="let member of team.members" style="display: inline-block; width: 250px; padding: 0 30px">
-            <app-type *ngIf="currentUser.user._id_user === member.user._id_user" [type]="getType(member.user._id_user, game._id_game)" [teamID]="team._id_team" [gameID]="game._id_game" [memberID]="member._id_member"></app-type>
-            <div *ngIf="currentUser.user._id_user !== member.user._id_user">{{ displayType(member.user._id_user, game._id_game) }}</div>
-          </div>
+          <app-game-type 
+            [teamID]="team._id_team"
+            [gameData]="game" 
+            [members]="team.members" 
+            [types]="team.types"
+            [currentMember]="currentUser">
+          </app-game-type>
         </div>
+
       </div>
     </div>
 </div>

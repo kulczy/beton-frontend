@@ -41,34 +41,4 @@ export class TeamGamesComponent implements OnInit, OnDestroy {
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }
-
-  /**
-   * Display looped user type
-   * @param userID
-   * @param gameID
-   */
-  displayType(userID: number, gameID: number): string {
-    // Default type
-    let type = 'x';
-
-    // If user type loop current game
-    if (this.team.types[userID] && this.team.types[userID][gameID]) {
-      const { type_a, type_b } = this.team.types[userID][gameID];
-      type = `${type_a} : ${type_b}`;
-    }
-
-    return type;
-  }
-
-  /**
-   * Return user type object to pass to type component
-   * @param userID
-   * @param gameID
-   */
-  getType(userID: number, gameID: number): Type {
-    if (this.team.types[userID] && this.team.types[userID][gameID]) {
-      return this.team.types[userID][gameID];
-    }
-    return null;
-  }
 }
