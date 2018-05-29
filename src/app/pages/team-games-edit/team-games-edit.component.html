@@ -11,7 +11,7 @@
       <form [formGroup]="formControl" (ngSubmit)="onSubmit()">
         <div class="modal-body">                                                  
           <input class="form-control" type="text" formControlName="close_at_date" placeholder="Datepicker" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY' }">          
-          <timepicker formControlName="close_at_time" [showMeridian]="isMeridian"></timepicker>
+          <timepicker formControlName="close_at_time" [showMeridian]="isMeridian" [minuteStep]="30"></timepicker>
           <input class="form-control" type="text" formControlName="player_a" placeholder="player_a">
           <input class="form-control" type="text" formControlName="player_b" placeholder="player_b">
           <input class="form-control" type="text" formControlName="score_a" placeholder="score_a">

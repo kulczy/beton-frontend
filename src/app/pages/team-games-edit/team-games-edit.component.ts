@@ -32,14 +32,21 @@ export class TeamGamesEditComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    // Create initial date
+    let initDate: any = moment('15:00', 'HH:mm');
+    initDate = moment().isSameOrAfter(initDate)
+      ? initDate.add(1, 'd')
+      : initDate;
+    initDate = initDate.toDate();
+
     // Create form
     this.formControl = this.fb.group({
-      close_at_date: [new Date(), [Validators.required]],
-      close_at_time: [new Date(), [Validators.required]],
+      close_at_date: [initDate, [Validators.required]],
+      close_at_time: [initDate, [Validators.required]],
       player_a: ['', [Validators.required]],
       player_b: ['', [Validators.required]],
-      score_a: [''],
-      score_b: ['']
+      score_a: ['', [Validators.pattern('^[0-9]*$')]],
+      score_b: ['', [Validators.pattern('^[0-9]*$')]]
     });
 
     // Set team data
@@ -68,7 +75,7 @@ export class TeamGamesEditComponent implements OnInit, OnDestroy {
             (gameData && currentMember.is_admin) ||
             (gameData &&
               gameData.creator_id === currentMember.user._id_user &&
-              (new Date(gameData.close_at).getTime() - new Date().getTime())) > 0
+              new Date(gameData.close_at).getTime() - new Date().getTime()) > 0
           ) {
             // Set team ID
             this.gameID = gameID;
