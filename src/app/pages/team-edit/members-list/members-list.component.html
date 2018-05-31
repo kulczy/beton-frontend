@@ -23,7 +23,7 @@
           </div>
           <div *ngIf="!member.is_admin">
             <span>is not admin</span>
-            <button (click)="onUpdateMember(member._id_member, member.id_team, 1, member.id_user)" class="btn btn-link" type="button">make admin</button>
+            <button *ngIf="member.is_member && !member.is_admin" (click)="onUpdateMember(member._id_member, member.id_team, 1, member.id_user)" class="btn btn-link" type="button">make admin</button>
           </div>
         </td>
     

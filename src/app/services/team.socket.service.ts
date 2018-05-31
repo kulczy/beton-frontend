@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
 import { SERVER_PATH } from '../params';
 import { AuthService } from './auth.service';
-import { Router } from '@angular/router';
 import { Member } from '../models';
 import { TeamStoreService } from './team.store.service';
 
@@ -12,7 +11,6 @@ export class TeamSocketService {
 
   constructor(
     private authService: AuthService,
-    private router: Router,
     private teamStoreService: TeamStoreService
   ) {}
 

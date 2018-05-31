@@ -76,13 +76,6 @@ export class TeamStoreService {
     const newMembers = team.members.filter((m) => m.id_user !== Number(userID));
     team.members = newMembers;
     this.team.next(team);
-
-    // const team = this.team.getValue();
-    // const i = team.members.findIndex((m) => m.id_user === userID);
-    // if (i !== -1) {
-    //   team.members.splice(i, 1);
-    //   this.team.next(team);
-    // }
   }
 
   /**

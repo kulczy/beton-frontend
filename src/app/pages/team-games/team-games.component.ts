@@ -21,7 +21,12 @@ export class TeamGamesComponent implements OnInit, OnDestroy {
       .getTeam()
       .pipe(takeUntil(this.unsubscribe))
       .subscribe((resp) => {
-        this.team = resp.team;
+        // Filter to display only members who accept invite (is_member = 1)
+        const newTeam = Object.assign({}, resp.team);
+        const newMembers = resp.team.members.filter((m) => m.is_member === 1);
+        newTeam.members = newMembers;
+
+        this.team = newTeam;
         this.currentMember = resp.currentMember;
       });
   }
