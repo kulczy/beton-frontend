@@ -1,12 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Subject, BehaviorSubject } from 'rxjs';
+import { Subject, BehaviorSubject, ReplaySubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TeamApiService } from '../../services/team.api.service';
 import { TeamStoreService } from '../../services/team.store.service';
 import { Team, Member } from '../../models';
 import { MemberApiService } from '../../services/member.api.service';
 import { AuthService } from '../../services/auth.service';
+import { TeamSocketService } from '../../services/team.socket.service';
 
 @Component({
   selector: 'app-team',
@@ -14,10 +15,9 @@ import { AuthService } from '../../services/auth.service';
 })
 export class TeamComponent implements OnInit, OnDestroy {
   private unsubscribe = new Subject<void>();
-  private teamURL = new BehaviorSubject<string>('');
-  private teamID: number;
+  private teamURL = new ReplaySubject<string>(null);
   private team: Team;
-  private teamCurrentMember: Member;
+  private currentMember: Member;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -25,7 +25,8 @@ export class TeamComponent implements OnInit, OnDestroy {
     private memberApiService: MemberApiService,
     private teamStoreService: TeamStoreService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private teamSocketService: TeamSocketService
   ) {}
 
   ngOnInit(): void {
@@ -37,52 +38,47 @@ export class TeamComponent implements OnInit, OnDestroy {
       });
 
     // Get team data from api
-    this.teamURL.subscribe((url) => {
-      if (url.length) {
-        this.teamApiService
-          .getTeamFull(url)
-          .pipe(takeUntil(this.unsubscribe))
-          .subscribe((resp: Team) => {
-            this.teamID = resp._id_team;
-            this.teamStoreService.setTeam(resp);
-          });
-      }
+    this.teamURL.pipe(takeUntil(this.unsubscribe)).subscribe((url: string) => {
+      this.teamApiService
+        .getTeamFull(url)
+        .pipe(takeUntil(this.unsubscribe))
+        .subscribe((resp: Team) => {
+          this.teamStoreService.setTeam(resp); // Set team to store
+          this.teamSocketService.socketConnect(resp._id_team); // Connect to socket
+        });
     });
 
     // Get team data from store
     this.teamStoreService
       .getTeam()
       .pipe(takeUntil(this.unsubscribe))
-      .subscribe((resp: Team) => {
-        if (resp.hasOwnProperty('name')) {
-          this.team = resp;
+      .subscribe((resp) => {
+        // Leave team if current user not exist
+        if (resp.team && !resp.currentMember) {
+          this.router.navigate(['./app']);
         }
-      });
-
-    // Get current user member data
-    this.teamStoreService
-      .currentTeamMember()
-      .pipe(takeUntil(this.unsubscribe))
-      .subscribe((resp: Member) => {
-        this.teamCurrentMember = resp;
+        // Set variables
+        this.team = resp.team;
+        this.currentMember = resp.currentMember;
       });
   }
 
   ngOnDestroy(): void {
+    this.teamSocketService.socketDisconnect();
     this.teamStoreService.clearTeam();
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }
 
   /**
-   * Leave curren team (delete member record from db)
+   * Leave current team (delete member record from db)
    */
   onLeaveTeam(): void {
     this.memberApiService
-      .deleteMember(this.authService.getUserID(), this.teamID)
+      .deleteMember(this.authService.getUserID(), this.team._id_team)
       .pipe(takeUntil(this.unsubscribe))
       .subscribe((resp) => {
-        this.router.navigate(['./app']);
+        console.log(`you leave ${this.team.name} team`);
       });
   }
 }

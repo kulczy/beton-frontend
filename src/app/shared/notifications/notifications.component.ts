@@ -1,10 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { TeamApiService } from '../../services/team.api.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Member } from '../../models';
 import { MemberApiService } from '../../services/member.api.service';
-import { TeamsStoreService } from '../../services/teams.store.service';
+import { MemberStoreService } from '../../services/member.store.service';
 
 @Component({
   selector: 'app-notifications',
@@ -12,21 +11,20 @@ import { TeamsStoreService } from '../../services/teams.store.service';
 })
 export class NotificationsComponent implements OnInit, OnDestroy {
   private unsubscribe = new Subject<void>();
-  teams: Member[];
+  members: Member[];
 
   constructor(
-    private teamApiService: TeamApiService,
     private memberApiService: MemberApiService,
-    private teamsStoreService: TeamsStoreService
+    private memberStoreService: MemberStoreService
   ) {}
 
   ngOnInit(): void {
-    // Get teams from API
-    this.teamApiService
-      .getTeams('', '', '0')
+    // Get memberships from store
+    this.memberStoreService
+      .getMemberships(0)
       .pipe(takeUntil(this.unsubscribe))
       .subscribe((resp) => {
-        this.teams = resp.resp;
+        this.members = resp;
       });
   }
 
@@ -45,14 +43,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
       .updateMember(memberID, { id_team, is_member: 1, join_at: 1 })
       .pipe(takeUntil(this.unsubscribe))
       .subscribe((resp) => {
-        // Add member to team store
-        const selectTeam = this.teams.find(
-          (elem) => elem._id_member === memberID
-        );
-        selectTeam.is_member = 1;
-        this.teamsStoreService.addTeams([selectTeam]);
-        // Remove member data from array
-        this.teams = this.removeMemberFromArray(this.teams, memberID);
+        console.log('memberships accept');
       });
   }
 
@@ -62,24 +53,12 @@ export class NotificationsComponent implements OnInit, OnDestroy {
    * @param userID
    * @param teamID
    */
-  onRejectInvite(memberID: number, userID: number, teamID: number): void {
+  onRejectInvite(userID: number, teamID: number): void {
     this.memberApiService
       .deleteMember(userID, teamID)
       .pipe(takeUntil(this.unsubscribe))
       .subscribe((resp) => {
-        this.teams = this.removeMemberFromArray(this.teams, memberID); // Remove member data from array
+        console.log('memberships delete from DB');
       });
-  }
-
-  /**
-   * Remove member from teams array and return new teams array
-   * @param teams teams array
-   * @param memberID
-   */
-  private removeMemberFromArray(teams: Member[], memberID: number): Member[] {
-    const newTeams = this.teams.splice(0); // Clone teams
-    const i = newTeams.findIndex((elem) => elem._id_member === memberID); // Find index of member to remove
-    newTeams.splice(i, 1);
-    return newTeams;
   }
 }

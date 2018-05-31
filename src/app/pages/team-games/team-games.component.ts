@@ -11,7 +11,7 @@ import { Team, Type, Member } from '../../models';
 export class TeamGamesComponent implements OnInit, OnDestroy {
   private unsubscribe = new Subject<void>();
   team: Team;
-  currentUser: Member;
+  currentMember: Member;
 
   constructor(private teamStoreService: TeamStoreService) {}
 
@@ -20,20 +20,9 @@ export class TeamGamesComponent implements OnInit, OnDestroy {
     this.teamStoreService
       .getTeam()
       .pipe(takeUntil(this.unsubscribe))
-      .subscribe((resp: Team) => {
-        if (resp.hasOwnProperty('name')) {
-          this.team = resp;
-        }
-      });
-
-    // Get current user/member object
-    this.teamStoreService
-      .currentTeamMember()
-      .pipe(takeUntil(this.unsubscribe))
       .subscribe((resp) => {
-        if (resp.hasOwnProperty('_id_member')) {
-          this.currentUser = resp;
-        }
+        this.team = resp.team;
+        this.currentMember = resp.currentMember;
       });
   }
 

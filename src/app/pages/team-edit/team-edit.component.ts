@@ -3,7 +3,6 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Team } from '../../models';
 import { TeamStoreService } from '../../services/team.store.service';
-import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-team-edit',
@@ -14,28 +13,16 @@ export class TeamEditComponent implements OnInit, OnDestroy {
   team: Team;
   allowAdminDelete: boolean;
 
-  constructor(
-    private teamStoreService: TeamStoreService,
-    private authService: AuthService
-  ) {}
+  constructor(private teamStoreService: TeamStoreService) {}
 
   ngOnInit(): void {
     // Get team members data
     this.teamStoreService
       .getTeam()
       .pipe(takeUntil(this.unsubscribe))
-      .subscribe((team: Team) => {
-        if (team.hasOwnProperty('name')) {
-          this.team = team;
-        }
-      });
-
-    // Get admins delete permission
-    this.teamStoreService
-      .allowAdminDelete()
-      .pipe(takeUntil(this.unsubscribe))
-      .subscribe((allow: boolean) => {
-        this.allowAdminDelete = allow;
+      .subscribe((resp) => {
+        this.team = resp.team;
+        this.allowAdminDelete = resp.adminsLength > 1 ? true : false;
       });
   }
 

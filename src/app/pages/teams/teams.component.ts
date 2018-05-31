@@ -3,8 +3,8 @@ import { HttpResponse } from '@angular/common/http';
 import { Subject, pipe } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TeamApiService } from '../../services/team.api.service';
-import { TeamsStoreService } from '../../services/teams.store.service';
 import { Member } from '../../models';
+import { MemberStoreService } from '../../services/member.store.service';
 
 @Component({
   selector: 'app-teams',
@@ -13,49 +13,37 @@ import { Member } from '../../models';
 export class TeamsComponent implements OnInit, OnDestroy {
   private unsubscribe = new Subject<void>();
   teams: Member[];
-  isAllTeamsLoaded = true;
+  isLoading: boolean;
 
   constructor(
     private teamApiService: TeamApiService,
-    private teamsStoreService: TeamsStoreService
+    private memberStoreService: MemberStoreService
   ) {}
 
   ngOnInit() {
-    // Subscribe to teams store
-    this.teamsStoreService
-      .getTeams()
+    // Start preloader
+    this.isLoading = true;
+
+    // Subscribe to membership store
+    this.memberStoreService
+      .getMemberships(1)
       .pipe(takeUntil(this.unsubscribe))
-      .subscribe((teams: Member[]) => {
-        this.teams = teams;
+      .subscribe((data: Member[]) => {
+        this.teams = data;
       });
 
-    // Get teams from API
+    // Get teams from API and set to store
     this.teamApiService
-      .getTeams('9', '', '1')
+      .getTeams()
       .pipe(takeUntil(this.unsubscribe))
       .subscribe((resp) => {
-        this.isAllTeamsLoaded = resp.resp.length >= resp.count ? true : false; // Check if all teams loaded
-        this.teamsStoreService.setTeams(resp.resp);
+        this.isLoading = false;
+        this.memberStoreService.setMemberships(resp.resp);
       });
   }
 
   ngOnDestroy(): void {
-    this.teamsStoreService.clearTeams();
     this.unsubscribe.next();
     this.unsubscribe.complete();
-  }
-
-  /**
-   * Load more teams to array
-   */
-  onLoadMoreTeams(): void {
-    this.teamApiService
-      .getTeams('9', this.teams.length, '1')
-      .pipe(takeUntil(this.unsubscribe))
-      .subscribe((resp) => {
-        this.isAllTeamsLoaded =
-          resp.resp.length + this.teams.length >= resp.count ? true : false; // Check if all teams loaded
-        this.teamsStoreService.addTeams(resp.resp, false);
-      });
   }
 }

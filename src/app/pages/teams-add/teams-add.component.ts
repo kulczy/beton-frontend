@@ -5,9 +5,9 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Team } from '../../models';
 import { TeamApiService } from '../../services/team.api.service';
-import { TeamsStoreService } from '../../services/teams.store.service';
 import { MemberApiService } from '../../services/member.api.service';
 import { AuthService } from '../../services/auth.service';
+import { MemberStoreService } from '../../services/member.store.service';
 
 @Component({
   selector: 'app-teams-add',
@@ -22,10 +22,10 @@ export class TeamsAddComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private teamApiService: TeamApiService,
-    private teamsStoreService: TeamsStoreService,
     private memberApiService: MemberApiService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private memberStoreService: MemberStoreService
   ) {}
 
   ngOnInit(): void {
@@ -65,7 +65,7 @@ export class TeamsAddComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.unsubscribe))
         .subscribe((resp) => {
           const createdTeam = { team: resp.newTeam, ...resp.newMember }; // Create new member
-          this.teamsStoreService.addTeams([createdTeam]); // Add new member to store
+          this.memberStoreService.addMembership(createdTeam); // Add new member to store
           this.isLoading = false; // Stop loader
           this.router.navigate(['/app']); // Redirect
         });

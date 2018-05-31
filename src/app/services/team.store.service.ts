@@ -1,62 +1,36 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { Member, Team, Game } from '../models';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { AuthService } from './auth.service';
+import { Member, Team, Game } from '../models';
 
 @Injectable()
 export class TeamStoreService {
   private team: BehaviorSubject<Team>;
-  private teamCurrentMember: BehaviorSubject<Member>;
-  private teamAllowAdminDelete: BehaviorSubject<boolean>;
 
   constructor(private authService: AuthService) {
-    this.team = new BehaviorSubject({});
-    this.teamCurrentMember = new BehaviorSubject({});
-    this.teamAllowAdminDelete = new BehaviorSubject(false);
-
-    // Subscribe to the team to get always fresh member data
-    this.team.subscribe((team: Team) => {
-      if (team.hasOwnProperty('name')) {
-        // Find current user in team members
-        const curr = team.members.find(
-          (item: Member) => item.id_user === this.authService.getUserID()
-        );
-        this.teamCurrentMember.next(curr);
-
-        // Check if there is more then 1 admin to allow admin removes
-        const admins = team.members.filter(
-          (item: Member) => item.is_admin === 1
-        );
-        if (admins.length > 1) {
-          this.teamAllowAdminDelete.next(true);
-        } else {
-          this.teamAllowAdminDelete.next(false);
-        }
-      } else {
-        this.teamCurrentMember.next({});
-      }
-    });
+    this.team = new BehaviorSubject(null);
   }
 
   /**
    * Get all team data
    */
-  getTeam(): BehaviorSubject<Team> {
-    return this.team;
-  }
+  getTeam(): Observable<any> {
+    return this.team.pipe(
+      map((team: Team) => {
+        // Current logged user membership data
+        const currentMember: Member = team
+          ? team.members.find((m) => m.id_user === this.authService.getUserID())
+          : null;
 
-  /**
-   * Return admins delete permission
-   */
-  allowAdminDelete(): BehaviorSubject<boolean> {
-    return this.teamAllowAdminDelete;
-  }
+        // Number of team admins
+        const adminsLength: number = team
+          ? team.members.filter((m: Member) => m.is_admin === 1).length
+          : null;
 
-  /**
-   * Get current team member
-   */
-  currentTeamMember(): BehaviorSubject<Member> {
-    return this.teamCurrentMember;
+        return { team, currentMember, adminsLength };
+      })
+    );
   }
 
   /**
@@ -71,7 +45,7 @@ export class TeamStoreService {
    * Clear team
    */
   clearTeam(): void {
-    this.team.next({});
+    this.team.next(null);
   }
 
   /**
@@ -81,5 +55,46 @@ export class TeamStoreService {
   findGame(gameID): Game {
     const allGames = this.team.getValue().games;
     return allGames.find((x) => x._id_game === gameID);
+  }
+
+  /**
+   * Add new member to team
+   * @param member
+   */
+  addNewMember(member: Member): void {
+    const team = this.team.getValue();
+    team.members.push(member);
+    this.team.next(team);
+  }
+
+  /**
+   * Remove member from team object
+   * @param userID
+   */
+  removeMember(userID): void {
+    const team = this.team.getValue();
+    const newMembers = team.members.filter((m) => m.id_user !== Number(userID));
+    team.members = newMembers;
+    this.team.next(team);
+
+    // const team = this.team.getValue();
+    // const i = team.members.findIndex((m) => m.id_user === userID);
+    // if (i !== -1) {
+    //   team.members.splice(i, 1);
+    //   this.team.next(team);
+    // }
+  }
+
+  /**
+   * Update member data
+   * @param member
+   */
+  updateMemer(member: Member): void {
+    const team = this.team.getValue();
+    const i = team.members.findIndex((m) => m._id_member === member._id_member);
+    if (i !== -1) {
+      team.members[i] = Object.assign({}, team.members[i], member);
+      this.team.next(team);
+    }
   }
 }

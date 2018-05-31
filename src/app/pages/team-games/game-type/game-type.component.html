@@ -1,17 +1,18 @@
-<div *ngFor="let member of members" style="display: inline-block; width: 250px; padding: 0 30px">
 
-  <!-- If can edit type -->
-  <app-type *ngIf="currentMember.user._id_user === member.user._id_user && !timerService.isClosed" 
-    [type]="getType(member.user._id_user)" 
-    [teamID]="teamID" 
-    [gameID]="game._id_game" 
-    [memberID]="member._id_member">
-  </app-type>
+  <div *ngFor="let member of members" style="display: inline-block; width: 250px; padding: 0 30px">
 
-  <!-- Only display type -->
-  <div *ngIf="currentMember.user._id_user !== member.user._id_user || currentMember.user._id_user === member.user._id_user && timerService.isClosed">
-    <div [ngClass]="{'bg-success': isWinner(member.user._id_user)}">
-        {{ displayType(member.user._id_user) }}
+    <!-- If can edit type -->
+    <app-type *ngIf="currentMember.user._id_user === member.user._id_user && !timerService.isClosed" 
+      [type]="getType(member.user._id_user)" 
+      [teamID]="teamID" 
+      [gameID]="game._id_game" 
+      [memberID]="member._id_member">
+    </app-type>
+  
+    <!-- Only display type -->
+    <div *ngIf="currentMember.user._id_user !== member.user._id_user || currentMember.user._id_user === member.user._id_user && timerService.isClosed">
+      <div [ngClass]="{'bg-success': isWinner(member.user._id_user)}">
+          {{ displayType(member.user._id_user) }}
+      </div>
     </div>
   </div>
-</div>

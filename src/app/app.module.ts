@@ -13,16 +13,17 @@ import { baseRoutes } from './app.routes';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 
-
 // Services nad guards
 import { AuthService } from './services/auth.service';
 import { AccessService } from './services/access.service';
 import { UserApiService } from './services/user.api.service';
 import { MemberApiService } from './services/member.api.service';
-import { TeamsStoreService } from './services/teams.store.service';
-import { TeamStoreService } from './services/team.store.service';
-import { TeamApiService } from './services/team.api.service';
 import { GameApiService } from './services/game.api.service';
+import { TeamApiService } from './services/team.api.service';
+import { MemberStoreService } from './services/member.store.service';
+import { TeamStoreService } from './services/team.store.service';
+import { MemberSocketService } from './services/member.socket.service';
+import { TeamSocketService } from './services/team.socket.service';
 import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard';
 import { MemberGuard } from './guards/member.guard';
@@ -86,7 +87,6 @@ import { GameInfoComponent } from './pages/team-games/game-info/game-info.compon
   providers: [
     AuthService,
     AccessService,
-    TeamsStoreService,
     TeamStoreService,
     TeamApiService,
     GameApiService,
@@ -95,6 +95,9 @@ import { GameInfoComponent } from './pages/team-games/game-info/game-info.compon
     AdminGuard,
     MemberGuard,
     UserApiService,
+    MemberSocketService,
+    TeamSocketService,
+    MemberStoreService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

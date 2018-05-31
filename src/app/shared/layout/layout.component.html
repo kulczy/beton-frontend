@@ -20,6 +20,6 @@
   <app-notifications></app-notifications>
 </div>
 
-<div class="px-5">
+<div *ngIf="isLoaded" class="px-5">
   <router-outlet></router-outlet>
 </div>

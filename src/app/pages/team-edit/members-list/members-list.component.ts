@@ -70,7 +70,7 @@ export class MembersListComponent implements OnInit, OnDestroy {
       .updateMember(_id_member, { id_team, is_admin })
       .pipe(takeUntil(this.unsubscribe))
       .subscribe((resp) => {
-        console.log(resp);
+        console.log('change admin permission', resp);
         if (is_admin === 0 && id_user === this.authService.getUserID()) {
           this.router.navigate(['../'], { relativeTo: this.activatedRoute });
         }

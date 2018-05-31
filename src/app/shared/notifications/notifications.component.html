@@ -1,10 +1,10 @@
-<div *ngFor="let team of teams">
+<div *ngFor="let team of members">
   <div class="card">
     <div class="card-body">
         <div><small>{{ team.inviting_data ? team.inviting_data.username : 'someone' }} invite you to join:</small></div>
         <div>{{ team.team.name }}</div> 
         <button (click)="onAcceptInvite(team._id_member, team.id_team)" class="btn btn-success" type="button">Accept</button>
-        <button (click)="onRejectInvite(team._id_member, team.id_user, team.id_team)" class="btn btn-danger" type="button">Reject</button>
+        <button (click)="onRejectInvite(team.id_user, team.id_team)" class="btn btn-danger" type="button">Reject</button>
     </div>
   </div>
 </div>

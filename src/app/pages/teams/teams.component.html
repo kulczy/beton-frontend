@@ -1,4 +1,4 @@
-<div *ngIf="teams">
+<div *ngIf="!isLoading">
     <h1>Teams</h1>
     <button routerLink="/app/teams/add" class="btn btn-success" type="button">Add new team</button>
     
@@ -8,6 +8,8 @@
           <div class="card">
             <div [routerLink]="['./team', team.team.url]" class="card-body">
                 {{ team.team.name }}
+                <p><small>ID: {{ team._id_member }}</small></p>
+                <p><small>join: {{ team.join_at }}</small></p>
                 <p>
                   <small>{{ team.is_member ? 'jest memberem' : 'nie jest memberem' }}</small>
                   <small *ngIf="team.is_admin"> __ *admin</small>
@@ -15,9 +17,6 @@
             </div>
           </div>
         </div>
-      </div>
-      <div *ngIf="!isAllTeamsLoaded">
-        <button (click)="onLoadMoreTeams()" class="btn btn-default" type="button">load more</button>
       </div>
     </div>
     

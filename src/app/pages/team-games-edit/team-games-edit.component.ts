@@ -6,7 +6,7 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import * as moment from 'moment';
 import { TeamStoreService } from '../../services/team.store.service';
 import { GameApiService } from '../../services/game.api.service';
-import { Game } from '../../models';
+import { Game, Member } from '../../models';
 
 @Component({
   selector: 'app-team-games-edit',
@@ -20,6 +20,7 @@ export class TeamGamesEditComponent implements OnInit, OnDestroy {
   teamID: number;
   gameID: number;
   teamURL: string;
+  currentMember: Member;
   // Date and time settings
   isMeridian = false;
 
@@ -50,8 +51,14 @@ export class TeamGamesEditComponent implements OnInit, OnDestroy {
     });
 
     // Set team data
-    this.teamID = this.teamStoreService.getTeam().getValue()._id_team;
-    this.teamURL = this.teamStoreService.getTeam().getValue().url;
+    this.teamStoreService
+      .getTeam()
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe((resp) => {
+        this.teamID = resp.team._id_team;
+        this.teamURL = resp.team.url;
+        this.currentMember = resp.currentMember;
+      });
 
     // Get game ID from url
     this.activatedRoute.params
@@ -64,17 +71,12 @@ export class TeamGamesEditComponent implements OnInit, OnDestroy {
           // Get game data from store
           const gameData = this.teamStoreService.findGame(gameID);
 
-          // Get current user data
-          const currentMember = this.teamStoreService
-            .currentTeamMember()
-            .getValue();
-
           // Settings if game exist in the store and
           // user have rights to edit game (is admin or creator)
           if (
-            (gameData && currentMember.is_admin) ||
+            (gameData && this.currentMember.is_admin) ||
             (gameData &&
-              gameData.creator_id === currentMember.user._id_user &&
+              gameData.creator_id === this.currentMember.user._id_user &&
               new Date(gameData.close_at).getTime() - new Date().getTime()) > 0
           ) {
             // Set team ID
@@ -135,6 +137,7 @@ export class TeamGamesEditComponent implements OnInit, OnDestroy {
         .addGame(newGame)
         .pipe(takeUntil(this.unsubscribe))
         .subscribe((resp) => {
+          console.log('new game added', resp);
           this.router.navigate(['/app/team', this.teamURL]);
         });
     }
@@ -145,6 +148,7 @@ export class TeamGamesEditComponent implements OnInit, OnDestroy {
         .updateGame(this.gameID, newGame)
         .pipe(takeUntil(this.unsubscribe))
         .subscribe((resp) => {
+          console.log('game updated', resp);
           this.router.navigate(['/app/team', this.teamURL]);
         });
     }

@@ -1,4 +1,4 @@
-<div *ngIf="team">
+<div *ngIf="currentMember">
     <h1>Games</h1>    
 
     <div class="d-flex">
@@ -12,7 +12,7 @@
 
         <!-- Game info -->
         <div *ngFor="let game of team.games" style="height: 120px; border-bottom: 1px solid #eee">
-          <app-game-info [gameData]="game" [currentMember]="currentUser"></app-game-info>
+          <app-game-info [gameData]="game" [currentMember]="currentMember"></app-game-info>
         </div>
 
       </div>
@@ -34,7 +34,7 @@
             [gameData]="game" 
             [members]="team.members" 
             [types]="team.types"
-            [currentMember]="currentUser">
+            [currentMember]="currentMember">
           </app-game-type>
         </div>
 

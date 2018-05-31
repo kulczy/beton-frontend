@@ -1,3 +1,7 @@
+// TEMPORARY SOLUTION FOR WORK WITH SOCKETS
+(window as any).global = window;
+
+
 /**
  * This file includes polyfills needed by Angular and is loaded before the app.
  * You can add your own extra polyfills to this file.
