@@ -47,7 +47,7 @@ export class MemberStoreService {
    * @param newMember
    */
   addMembership(newMember: Member): void {
-    const members = this.members.getValue();
+    const members = this.members.getValue().slice();
     members.unshift(newMember);
     this.members.next(members);
   }
@@ -57,7 +57,7 @@ export class MemberStoreService {
    * @param teamID
    */
   removeMembership(teamID: number): void {
-    const members = this.members.getValue();
+    const members = this.members.getValue().slice();
     const i = members.findIndex((m) => m.id_team === teamID);
     if (i !== -1) {
       members.splice(i, 1);
@@ -70,7 +70,7 @@ export class MemberStoreService {
    * @param member
    */
   updatedMemership(member: Member): void {
-    const members = this.members.getValue();
+    const members = this.members.getValue().slice();
     const i = members.findIndex((m) => m._id_member === member._id_member);
     if (i !== -1) {
       members[i] = Object.assign({}, members[i], member);
