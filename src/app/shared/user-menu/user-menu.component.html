@@ -1,0 +1,4 @@
+<ng-container *ngIf="user">
+  <img src="{{ user.photo }}" alt="{{ user.username }}" width="30">
+  <span routerLink="/app/account">{{ user.username }}</span>
+</ng-container>

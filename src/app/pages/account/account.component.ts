@@ -6,6 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../models';
 import { Router } from '@angular/router';
+import { UserStoreService } from '../../services/user.store.service';
 
 @Component({
   selector: 'app-account',
@@ -20,6 +21,7 @@ export class AccountComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private userApiService: UserApiService,
+    private userStoreService: UserStoreService,
     private authService: AuthService,
     private router: Router
   ) {}
@@ -66,7 +68,8 @@ export class AccountComponent implements OnInit, OnDestroy {
         .updateUser(this.authService.getUserID(), newUserData)
         .pipe(takeUntil(this.unsubscribe))
         .subscribe((resp) => {
-          console.log(resp);
+          console.log('User data updated', resp);
+          this.userStoreService.updateUser(newUserData);
         });
     }
   }

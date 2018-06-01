@@ -22,6 +22,7 @@ import { GameApiService } from './services/game.api.service';
 import { TeamApiService } from './services/team.api.service';
 import { MemberStoreService } from './services/member.store.service';
 import { TeamStoreService } from './services/team.store.service';
+import { UserStoreService } from './services/user.store.service';
 import { MemberSocketService } from './services/member.socket.service';
 import { TeamSocketService } from './services/team.socket.service';
 import { AuthGuard } from './guards/auth.guard';
@@ -50,6 +51,7 @@ import { NotificationsComponent } from './shared/notifications/notifications.com
 import { TypeComponent } from './pages/team-games/type/type.component';
 import { GameTypeComponent } from './pages/team-games/game-type/game-type.component';
 import { GameInfoComponent } from './pages/team-games/game-info/game-info.component';
+import { UserMenuComponent } from './shared/user-menu/user-menu.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +72,8 @@ import { GameInfoComponent } from './pages/team-games/game-info/game-info.compon
     NotificationsComponent,
     TypeComponent,
     GameTypeComponent,
-    GameInfoComponent
+    GameInfoComponent,
+    UserMenuComponent
   ],
   imports: [
     BrowserModule,
@@ -98,6 +101,7 @@ import { GameInfoComponent } from './pages/team-games/game-info/game-info.compon
     MemberSocketService,
     TeamSocketService,
     MemberStoreService,
+    UserStoreService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

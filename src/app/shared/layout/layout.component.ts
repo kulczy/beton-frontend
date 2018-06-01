@@ -6,6 +6,9 @@ import { MemberStoreService } from '../../services/member.store.service';
 import { TeamApiService } from '../../services/team.api.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { UserApiService } from '../../services/user.api.service';
+import { User } from '../../models';
+import { UserStoreService } from '../../services/user.store.service';
 
 @Component({
   selector: 'app-layout',
@@ -13,12 +16,15 @@ import { Subject } from 'rxjs';
 })
 export class LayoutComponent implements OnInit, OnDestroy {
   private unsubscribe = new Subject<void>();
-  isLoaded = false;
+  isLoadedMembership = false;
+  isLoadedUser = false;
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private teamApiService: TeamApiService,
+    private userApiService: UserApiService,
+    private userStoreService: UserStoreService,
     private memberStoreService: MemberStoreService,
     private memberSocketService: MemberSocketService
   ) {}
@@ -35,7 +41,16 @@ export class LayoutComponent implements OnInit, OnDestroy {
       .subscribe((resp) => {
         this.memberStoreService.setMemberships(resp.resp);
         this.memberSocketService.socketConnect();
-        this.isLoaded = true;
+        this.isLoadedMembership = true;
+      });
+
+    // Get user data from API and send to store
+    this.userApiService
+      .getUserByID(this.authService.getUserID())
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe((resp: User) => {
+        this.userStoreService.setUser(resp);
+        this.isLoadedUser = true;
       });
   }
 
