@@ -4,6 +4,7 @@ import { SERVER_PATH } from '../params';
 import { AuthService } from './auth.service';
 import { Member } from '../models';
 import { TeamStoreService } from './team.store.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class TeamSocketService {
@@ -11,7 +12,8 @@ export class TeamSocketService {
 
   constructor(
     private authService: AuthService,
-    private teamStoreService: TeamStoreService
+    private teamStoreService: TeamStoreService,
+    private router: Router
   ) {}
 
   /**
@@ -38,6 +40,11 @@ export class TeamSocketService {
     // On member update
     this.socket.on('memberUpdated', (data: Member) => {
       this.teamStoreService.updateMemer(data);
+    });
+
+    // On team delete
+    this.socket.on('teamDelete', () => {
+      this.router.navigate(['/app']);
     });
 
     // Error handler

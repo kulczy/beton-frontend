@@ -51,7 +51,8 @@ export class TeamEditCardComponent implements OnInit, OnDestroy {
       .deleteTeam(this.team._id_team)
       .pipe(takeUntil(this.unsubscribe))
       .subscribe((resp) => {
-        this.router.navigate(['/app']);
+        // this.router.navigate(['/app']);
+        console.log('team deleted', resp);
       });
   }
 }
