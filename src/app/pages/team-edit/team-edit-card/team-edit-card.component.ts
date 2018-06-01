@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 import { TeamApiService } from '../../../services/team.api.service';
 import { takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { TeamStoreService } from '../../../services/team.store.service';
 
 @Component({
   selector: 'app-team-edit-card',
@@ -18,6 +19,7 @@ export class TeamEditCardComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private teamApiService: TeamApiService,
+    private teamStoreService: TeamStoreService,
     private router: Router
   ) {}
 
@@ -41,7 +43,10 @@ export class TeamEditCardComponent implements OnInit, OnDestroy {
         })
         .pipe(takeUntil(this.unsubscribe))
         .subscribe((resp) => {
-          console.log('Team updated', resp);
+          this.teamStoreService.updateTeam({
+            name: this.formControl.controls.name.value
+          });
+          console.log('Team data updated', resp);
         });
     }
   }

@@ -1,5 +1,6 @@
 <div *ngIf="team">
   <nav>
+    <h1>{{ team.name }}</h1>
     <div routerLink="./">Games</div>
     <div *ngIf="currentMember.is_admin" routerLink="./edit">Edit</div>
     <div *ngIf="!currentMember.is_admin" (click)="onLeaveTeam()">Leave the team</div>

@@ -49,6 +49,15 @@ export class TeamStoreService {
   }
 
   /**
+   * Update team data
+   * @param teamData
+   */
+  updateTeam(teamData: Team): void {
+    const newTeam = Object.assign({}, this.team.getValue(), teamData);
+    this.team.next(newTeam);
+  }
+
+  /**
    * Return game by ID in team object
    * @param gameID
    */
