@@ -162,6 +162,7 @@ export class TeamGamesEditComponent implements OnInit, OnDestroy {
       .deleteGame(this.gameID, this.teamID)
       .pipe(takeUntil(this.unsubscribe))
       .subscribe((resp) => {
+        console.log('game removed');
         this.router.navigate(['/app/team', this.teamURL]);
       });
   }

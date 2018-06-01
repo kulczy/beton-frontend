@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from './auth.service';
-import { Member, Team, Game } from '../models';
+import { Member, Team, Game, Type } from '../models';
 
 @Injectable()
 export class TeamStoreService {
@@ -58,12 +58,62 @@ export class TeamStoreService {
   }
 
   /**
+   * Add new game
+   * @param game
+   */
+  addGame(game: Game): void {
+    const team = Object.assign({}, this.team.getValue());
+    team.games.unshift(game);
+    this.team.next(team);
+  }
+
+  /**
+   * Remove game
+   * @param gameID
+   */
+  removeGame(gameID: number): void {
+    const team = Object.assign({}, this.team.getValue());
+    const i = team.games.findIndex((g) => g._id_game === gameID);
+    if (i !== -1) {
+      team.games.splice(i, 1);
+      this.team.next(team);
+    }
+  }
+
+  /**
+   * Update game
+   * @param game
+   */
+  updateGame(game: Game): void {
+    const team = Object.assign({}, this.team.getValue());
+    const i = team.games.findIndex((g) => g._id_game === game._id_game);
+    if (i !== -1) {
+      team.games[i] = Object.assign({}, team.games[i], game);
+      this.team.next(team);
+    }
+  }
+
+  /**
+   * Set new type data
+   * @param type
+   */
+  setType(type: Type): void {
+    const team = Object.assign({}, this.team.getValue());
+    if (!(type.id_user in team.types)) {
+      team.types[type.id_user] = {};
+    }
+    team.types[type.id_user][type.id_game] = type;
+    this.team.next(team);
+  }
+
+  /**
    * Add new member to team
    * @param member
    */
   addNewMember(member: Member): void {
-    const team = this.team.getValue();
+    const team = Object.assign({}, this.team.getValue());
     team.members.push(member);
+    team.types[member.id_user] = {};
     this.team.next(team);
   }
 
@@ -72,9 +122,10 @@ export class TeamStoreService {
    * @param userID
    */
   removeMember(userID): void {
-    const team = this.team.getValue();
+    const team = Object.assign({}, this.team.getValue());
     const newMembers = team.members.filter((m) => m.id_user !== Number(userID));
     team.members = newMembers;
+    delete team.types[userID];
     this.team.next(team);
   }
 
@@ -83,7 +134,7 @@ export class TeamStoreService {
    * @param member
    */
   updateMemer(member: Member): void {
-    const team = this.team.getValue();
+    const team = Object.assign({}, this.team.getValue());
     const i = team.members.findIndex((m) => m._id_member === member._id_member);
     if (i !== -1) {
       team.members[i] = Object.assign({}, team.members[i], member);

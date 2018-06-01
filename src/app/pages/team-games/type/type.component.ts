@@ -41,8 +41,22 @@ export class TypeComponent implements OnInit, OnDestroy {
   constructor(private fb: FormBuilder, private gameApiService: GameApiService) {
     // Init form
     this.formControl = this.fb.group({
-      type_a: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
-      type_b: ['', [Validators.required, Validators.pattern('^[0-9]*$')]]
+      type_a: [
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(10),
+          Validators.pattern('^[0-9]*$')
+        ]
+      ],
+      type_b: [
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(10),
+          Validators.pattern('^[0-9]*$')
+        ]
+      ]
     });
   }
 

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
 import { SERVER_PATH } from '../params';
 import { AuthService } from './auth.service';
-import { Member } from '../models';
+import { Member, Game, Type } from '../models';
 import { TeamStoreService } from './team.store.service';
 import { Router } from '@angular/router';
 
@@ -45,6 +45,26 @@ export class TeamSocketService {
     // On team delete
     this.socket.on('teamDelete', () => {
       this.router.navigate(['/app']);
+    });
+
+    // On game added
+    this.socket.on('gameAdded', (data: Game) => {
+      this.teamStoreService.addGame(data);
+    });
+
+    // On game deleted
+    this.socket.on('gameDeleted', (data: any) => {
+      this.teamStoreService.removeGame(Number(data.id_game));
+    });
+
+    // On game updated
+    this.socket.on('gameUpdated', (data: Game) => {
+      this.teamStoreService.updateGame(data);
+    });
+
+    // On type change (insert or update)
+    this.socket.on('typeChanged', (data: Type) => {
+      this.teamStoreService.setType(data);
     });
 
     // Error handler
