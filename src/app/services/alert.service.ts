@@ -1,0 +1,60 @@
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+
+const MESSAGES = {
+  teamAdded: {
+    msg: 'Team added successfully',
+    type: 'success'
+  },
+  teamRemoved: {
+    msg: 'Team removed successfully',
+    type: 'success'
+  },
+  teamUpdated: {
+    msg: 'Team updated successfully',
+    type: 'success'
+  }
+};
+
+@Injectable()
+export class AlertService {
+  private messages: any;
+  private emptyAlert: any;
+  private alert: BehaviorSubject<any>;
+  private timeout: any;
+
+  constructor() {
+    this.messages = MESSAGES;
+
+    // Create empty alert
+    this.emptyAlert = {
+      visible: false,
+      msg: '',
+      type: ''
+    };
+
+    // Init alert observable
+    this.alert = new BehaviorSubject(this.emptyAlert);
+  }
+
+  showAlert(alert: string): void {
+    if (alert in this.messages) {
+      // Emit alert
+      this.alert.next({
+        visible: true,
+        msg: this.messages[alert].msg,
+        type: this.messages[alert].type
+      });
+
+      // Create timeout to clear alert
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        this.alert.next(this.emptyAlert);
+      }, 5000);
+    }
+  }
+
+  getAlert(): BehaviorSubject<any> {
+    return this.alert;
+  }
+}

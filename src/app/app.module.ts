@@ -15,6 +15,7 @@ import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 
 // Services nad guards
 import { AuthService } from './services/auth.service';
+import { AlertService } from './services/alert.service';
 import { AccessService } from './services/access.service';
 import { UserApiService } from './services/user.api.service';
 import { MemberApiService } from './services/member.api.service';
@@ -52,6 +53,7 @@ import { TypeComponent } from './pages/team-games/type/type.component';
 import { GameTypeComponent } from './pages/team-games/game-type/game-type.component';
 import { GameInfoComponent } from './pages/team-games/game-info/game-info.component';
 import { UserMenuComponent } from './shared/user-menu/user-menu.component';
+import { AlertComponent } from './shared/alert/alert.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +75,8 @@ import { UserMenuComponent } from './shared/user-menu/user-menu.component';
     TypeComponent,
     GameTypeComponent,
     GameInfoComponent,
-    UserMenuComponent
+    UserMenuComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,
@@ -89,6 +92,7 @@ import { UserMenuComponent } from './shared/user-menu/user-menu.component';
   ],
   providers: [
     AuthService,
+    AlertService,
     AccessService,
     TeamStoreService,
     TeamApiService,

@@ -8,6 +8,7 @@ import { TeamApiService } from '../../services/team.api.service';
 import { MemberApiService } from '../../services/member.api.service';
 import { AuthService } from '../../services/auth.service';
 import { MemberStoreService } from '../../services/member.store.service';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-teams-add',
@@ -25,7 +26,8 @@ export class TeamsAddComponent implements OnInit, OnDestroy {
     private memberApiService: MemberApiService,
     private authService: AuthService,
     private router: Router,
-    private memberStoreService: MemberStoreService
+    private memberStoreService: MemberStoreService,
+    private alertService: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -68,6 +70,7 @@ export class TeamsAddComponent implements OnInit, OnDestroy {
           this.memberStoreService.addMembership(createdTeam); // Add new member to store
           this.isLoading = false; // Stop loader
           this.router.navigate(['/app']); // Redirect
+          this.alertService.showAlert('teamAdded');
         });
     }
   }
