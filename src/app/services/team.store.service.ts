@@ -73,20 +73,8 @@ export class TeamStoreService {
   addGame(game: Game): void {
     const team = Object.assign({}, this.team.getValue());
     team.games.unshift(game);
+    team.games = this.sortGames(team.games);
     this.team.next(team);
-  }
-
-  /**
-   * Remove game
-   * @param gameID
-   */
-  removeGame(gameID: number): void {
-    const team = Object.assign({}, this.team.getValue());
-    const i = team.games.findIndex((g) => g._id_game === gameID);
-    if (i !== -1) {
-      team.games.splice(i, 1);
-      this.team.next(team);
-    }
   }
 
   /**
@@ -98,6 +86,20 @@ export class TeamStoreService {
     const i = team.games.findIndex((g) => g._id_game === game._id_game);
     if (i !== -1) {
       team.games[i] = Object.assign({}, team.games[i], game);
+      team.games = this.sortGames(team.games);
+      this.team.next(team);
+    }
+  }
+
+  /**
+   * Remove game
+   * @param gameID
+   */
+  removeGame(gameID: number): void {
+    const team = Object.assign({}, this.team.getValue());
+    const i = team.games.findIndex((g) => g._id_game === gameID);
+    if (i !== -1) {
+      team.games.splice(i, 1);
       this.team.next(team);
     }
   }
@@ -149,5 +151,36 @@ export class TeamStoreService {
       team.members[i] = Object.assign({}, team.members[i], member);
       this.team.next(team);
     }
+  }
+
+  /**
+   * Sort games
+   * @param games
+   */
+  private sortGames(games: Game[]) {
+    const newGames = [];
+    const gamesOpen = [];
+    const gamesClosed = [];
+
+    // Split games to open and slode
+    games.forEach((g) => {
+      if (new Date(g.close_at).getTime() > new Date().getTime()) {
+        gamesOpen.push(g);
+      } else {
+        gamesClosed.push(g);
+      }
+    });
+
+    // Sort open games
+    gamesOpen.sort(
+      (a, b) => new Date(a.close_at).getTime() - new Date(b.close_at).getTime()
+    );
+
+    // Sort closed games
+    gamesClosed.sort(
+      (a, b) => new Date(b.close_at).getTime() - new Date(a.close_at).getTime()
+    );
+
+    return newGames.concat(gamesOpen, gamesClosed);
   }
 }
