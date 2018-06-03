@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import * as moment from 'moment';
 
 @Injectable()
@@ -7,9 +8,11 @@ export class TimerService {
   private interval: any;
   private dateDiff: number;
   private closeAt: any;
+  private closeNow: BehaviorSubject<boolean>;
 
   constructor() {
     this.isClosed = true;
+    this.closeNow = new BehaviorSubject(null);
   }
 
   /**
@@ -19,6 +22,9 @@ export class TimerService {
   public setGameTime(closeAt: any) {
     // Clear old interval if exist
     this.clearInterval();
+
+    // Clear close  trigger
+    this.closeNow.next(null);
 
     // Set close date
     this.closeAt = closeAt;
@@ -44,9 +50,11 @@ export class TimerService {
     return setInterval(() => {
       this.dateDiff = this.dateDiff - 1;
 
-      if (this.dateDiff <= 0) {
+      if (this.dateDiff < 0) {
         this.isClosed = true;
         this.clearInterval();
+        // Trigger close events
+        this.closeNow.next(true);
       }
     }, 1000);
   }
@@ -78,7 +86,12 @@ export class TimerService {
     } else if (d < 86400) {
       return `${hDisplay}h ${mDisplay}m`;
     } else {
-      return moment(this.closeAt).fromNow(true) + ' to close';
+      return moment(this.closeAt).fromNow(true);
+      // return moment(this.closeAt).format('DD.MM.YYYY');
     }
+  }
+
+  public getCloseNow(): BehaviorSubject<boolean> {
+    return this.closeNow;
   }
 }

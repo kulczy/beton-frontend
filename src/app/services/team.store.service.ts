@@ -154,6 +154,15 @@ export class TeamStoreService {
   }
 
   /**
+   * Trigger game sorting
+   */
+  goSortGames(): void {
+    const team = Object.assign({}, this.team.getValue());
+    team.games = this.sortGames(team.games);
+    this.team.next(team);
+  }
+
+  /**
    * Sort games
    * @param games
    */
