@@ -8,6 +8,7 @@ import { Team, Member } from '../../models';
 import { MemberApiService } from '../../services/member.api.service';
 import { AuthService } from '../../services/auth.service';
 import { TeamSocketService } from '../../services/team.socket.service';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-team',
@@ -26,7 +27,8 @@ export class TeamComponent implements OnInit, OnDestroy {
     private teamStoreService: TeamStoreService,
     private authService: AuthService,
     private router: Router,
-    private teamSocketService: TeamSocketService
+    private teamSocketService: TeamSocketService,
+    private alertService: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -78,7 +80,9 @@ export class TeamComponent implements OnInit, OnDestroy {
       .deleteMember(this.authService.getUserID(), this.team._id_team)
       .pipe(takeUntil(this.unsubscribe))
       .subscribe((resp) => {
-        console.log(`you leave ${this.team.name} team`);
+        // console.log(`you leave ${this.team.name} team`);
       });
+
+    this.alertService.showAlert('memberLeave');
   }
 }

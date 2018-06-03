@@ -4,6 +4,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Member } from '../../models';
 import { MemberApiService } from '../../services/member.api.service';
 import { MemberStoreService } from '../../services/member.store.service';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-notifications',
@@ -15,7 +16,8 @@ export class NotificationsComponent implements OnInit, OnDestroy {
 
   constructor(
     private memberApiService: MemberApiService,
-    private memberStoreService: MemberStoreService
+    private memberStoreService: MemberStoreService,
+    private alertService: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -43,7 +45,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
       .updateMember(memberID, { id_team, is_member: 1, join_at: 1 })
       .pipe(takeUntil(this.unsubscribe))
       .subscribe((resp) => {
-        console.log('memberships accept');
+        this.alertService.showAlert('memberJoin');
       });
   }
 
@@ -58,7 +60,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
       .deleteMember(userID, teamID)
       .pipe(takeUntil(this.unsubscribe))
       .subscribe((resp) => {
-        console.log('memberships delete from DB');
+        // console.log('memberships delete from DB');
       });
   }
 }

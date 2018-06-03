@@ -7,6 +7,7 @@ import { AuthService } from '../../services/auth.service';
 import { User } from '../../models';
 import { Router } from '@angular/router';
 import { UserStoreService } from '../../services/user.store.service';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-account',
@@ -23,7 +24,8 @@ export class AccountComponent implements OnInit, OnDestroy {
     private userApiService: UserApiService,
     private userStoreService: UserStoreService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private alertService: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -68,7 +70,7 @@ export class AccountComponent implements OnInit, OnDestroy {
         .updateUser(this.authService.getUserID(), newUserData)
         .pipe(takeUntil(this.unsubscribe))
         .subscribe((resp) => {
-          console.log('User data updated', resp);
+          this.alertService.showAlert('userUpdated');
           this.userStoreService.updateUser(newUserData);
         });
     }
@@ -86,7 +88,7 @@ export class AccountComponent implements OnInit, OnDestroy {
           this.router.navigate(['/']);
           this.authService.logout();
         } else {
-          console.log('user is admin');
+          this.alertService.showAlert('userDeleteReject');
         }
       });
   }

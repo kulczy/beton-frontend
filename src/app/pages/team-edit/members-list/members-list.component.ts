@@ -7,6 +7,7 @@ import { TeamStoreService } from '../../../services/team.store.service';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { AlertService } from '../../../services/alert.service';
 
 @Component({
   selector: 'app-members-list',
@@ -25,7 +26,8 @@ export class MembersListComponent implements OnInit, OnDestroy {
     private memberApiService: MemberApiService,
     private authService: AuthService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private alertSevice: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -50,7 +52,7 @@ export class MembersListComponent implements OnInit, OnDestroy {
       .deleteMember(id_user, id_team)
       .pipe(takeUntil(this.unsubscribe))
       .subscribe((resp) => {
-        console.log(resp);
+        this.alertSevice.showAlert('memberRemoved');
       });
   }
 
@@ -70,7 +72,7 @@ export class MembersListComponent implements OnInit, OnDestroy {
       .updateMember(_id_member, { id_team, is_admin })
       .pipe(takeUntil(this.unsubscribe))
       .subscribe((resp) => {
-        console.log('change admin permission', resp);
+        this.alertSevice.showAlert('memberAdminUpdated');
         if (is_admin === 0 && id_user === this.authService.getUserID()) {
           this.router.navigate(['../'], { relativeTo: this.activatedRoute });
         }
@@ -90,7 +92,13 @@ export class MembersListComponent implements OnInit, OnDestroy {
         )
         .pipe(takeUntil(this.unsubscribe))
         .subscribe((resp) => {
+          // Display message
           this.memberAddFormMsg = resp.msg;
+
+          // Clear form
+          this.formControl.patchValue({
+            email: ''
+          });
         });
     }
   }

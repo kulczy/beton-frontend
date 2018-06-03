@@ -1,7 +1,7 @@
 <div *ngIf="visible" style="position: fixed; right: 10px; bottom: 10px; max-width: 400px;">
   <div class="alert alert-{{ type }}" role="alert">
     {{ msg }}
-    <button type="button" class="close" >
+    <button (click)="onClose()" type="button" class="close" >
       <span>&times;</span>
     </button>
   </div>  

@@ -13,6 +13,46 @@ const MESSAGES = {
   teamUpdated: {
     msg: 'Team updated successfully',
     type: 'success'
+  },
+  memberJoin: {
+    msg: 'You joined the team',
+    type: 'success'
+  },
+  memberRemoved: {
+    msg: 'Member removed successfully',
+    type: 'success'
+  },
+  memberAdminUpdated: {
+    msg: 'Member role updated successfully',
+    type: 'success'
+  },
+  memberLeave: {
+    msg: 'You left the team successfully',
+    type: 'success'
+  },
+  userDeleteReject: {
+    msg: 'You can not be an administrator of any team if you want to delete your account',
+    type: 'danger'
+  },
+  userUpdated: {
+    msg: 'User data updated successfully',
+    type: 'success'
+  },
+  gameRemoved: {
+    msg: 'Game removed successfully',
+    type: 'success'
+  },
+  gameUpdated: {
+    msg: 'Game updated successfully',
+    type: 'success'
+  },
+  gameAdded: {
+    msg: 'New game added successfully',
+    type: 'success'
+  },
+  typeUpdated: {
+    msg: 'Type updated successfully',
+    type: 'success'
   }
 };
 
@@ -56,5 +96,10 @@ export class AlertService {
 
   getAlert(): BehaviorSubject<any> {
     return this.alert;
+  }
+
+  closeAlert(): void {
+    clearTimeout(this.timeout);
+    this.alert.next(this.emptyAlert);
   }
 }

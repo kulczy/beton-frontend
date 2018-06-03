@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import { TeamStoreService } from '../../services/team.store.service';
 import { GameApiService } from '../../services/game.api.service';
 import { Game, Member } from '../../models';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-team-games-edit',
@@ -29,7 +30,8 @@ export class TeamGamesEditComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private teamStoreService: TeamStoreService,
     private gameApiService: GameApiService,
-    private router: Router
+    private router: Router,
+    private alertService: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -137,7 +139,7 @@ export class TeamGamesEditComponent implements OnInit, OnDestroy {
         .addGame(newGame)
         .pipe(takeUntil(this.unsubscribe))
         .subscribe((resp) => {
-          console.log('new game added', resp);
+          this.alertService.showAlert('gameAdded');
           this.router.navigate(['/app/team', this.teamURL]);
         });
     }
@@ -148,7 +150,7 @@ export class TeamGamesEditComponent implements OnInit, OnDestroy {
         .updateGame(this.gameID, newGame)
         .pipe(takeUntil(this.unsubscribe))
         .subscribe((resp) => {
-          console.log('game updated', resp);
+          this.alertService.showAlert('gameUpdated');
           this.router.navigate(['/app/team', this.teamURL]);
         });
     }
@@ -162,7 +164,7 @@ export class TeamGamesEditComponent implements OnInit, OnDestroy {
       .deleteGame(this.gameID, this.teamID)
       .pipe(takeUntil(this.unsubscribe))
       .subscribe((resp) => {
-        console.log('game removed');
+        this.alertService.showAlert('gameRemoved');
         this.router.navigate(['/app/team', this.teamURL]);
       });
   }

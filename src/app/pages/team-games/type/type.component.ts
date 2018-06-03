@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { GameApiService } from '../../../services/game.api.service';
+import { AlertService } from '../../../services/alert.service';
 
 @Component({
   selector: 'app-type',
@@ -38,7 +39,11 @@ export class TypeComponent implements OnInit, OnDestroy {
     }
   }
 
-  constructor(private fb: FormBuilder, private gameApiService: GameApiService) {
+  constructor(
+    private fb: FormBuilder,
+    private gameApiService: GameApiService,
+    private alertService: AlertService
+  ) {
     // Init form
     this.formControl = this.fb.group({
       type_a: [
@@ -94,18 +99,20 @@ export class TypeComponent implements OnInit, OnDestroy {
 
       // Check if record should be create or update
       if (this.originalType) {
+        // Update type
         this.gameApiService
           .updateType(this.originalType._id_type, newType)
           .pipe(takeUntil(this.unsubscribe))
           .subscribe((resp) => {
-            console.log(resp);
+            this.alertService.showAlert('typeUpdated');
           });
       } else {
+        // Add new type
         this.gameApiService
           .addType(newType)
           .pipe(takeUntil(this.unsubscribe))
           .subscribe((resp) => {
-            console.log(resp);
+            this.alertService.showAlert('typeUpdated');
           });
       }
     }

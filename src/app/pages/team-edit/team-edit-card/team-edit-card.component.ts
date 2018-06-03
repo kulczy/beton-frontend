@@ -6,6 +6,7 @@ import { TeamApiService } from '../../../services/team.api.service';
 import { takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { TeamStoreService } from '../../../services/team.store.service';
+import { AlertService } from '../../../services/alert.service';
 
 @Component({
   selector: 'app-team-edit-card',
@@ -20,7 +21,8 @@ export class TeamEditCardComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private teamApiService: TeamApiService,
     private teamStoreService: TeamStoreService,
-    private router: Router
+    private router: Router,
+    private alertService: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -46,7 +48,7 @@ export class TeamEditCardComponent implements OnInit, OnDestroy {
           this.teamStoreService.updateTeam({
             name: this.formControl.controls.name.value
           });
-          console.log('Team data updated', resp);
+          this.alertService.showAlert('teamUpdated');
         });
     }
   }
@@ -57,7 +59,8 @@ export class TeamEditCardComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe))
       .subscribe((resp) => {
         // this.router.navigate(['/app']);
-        console.log('team deleted', resp);
       });
+
+    this.alertService.showAlert('teamRemoved');
   }
 }
