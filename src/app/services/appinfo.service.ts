@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { Title } from '@angular/platform-browser';
 
 interface Breadcrumps {
   title?: string;
@@ -12,7 +13,7 @@ export class AppInfoService {
   private breadcrumps: BehaviorSubject<Breadcrumps[]>;
   private appDate$: BehaviorSubject<Date>;
 
-  constructor() {
+  constructor(private titleService: Title) {
     this.breadcrumps = new BehaviorSubject(null);
     this.appDate$ = new BehaviorSubject(null);
   }
@@ -23,6 +24,8 @@ export class AppInfoService {
 
   setBreadcrumps(data: Breadcrumps[]): void {
     this.breadcrumps.next(data);
+    // Set document title
+    this.titleService.setTitle(data[data.length - 1].title + ' | Beton');
   }
 
   /**
