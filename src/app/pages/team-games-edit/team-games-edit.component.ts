@@ -9,6 +9,7 @@ import { GameApiService } from '../../services/game.api.service';
 import { Game, Member } from '../../models';
 import { AlertService } from '../../services/alert.service';
 import { inOut } from '../../utils/animation';
+import { AppInfoService } from '../../services/appinfo.service';
 
 @Component({
   selector: 'app-team-games-edit',
@@ -39,7 +40,8 @@ export class TeamGamesEditComponent implements OnInit, OnDestroy {
     private teamStoreService: TeamStoreService,
     private gameApiService: GameApiService,
     private router: Router,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private appInfoService: AppInfoService
   ) {}
 
   ngOnInit(): void {
@@ -93,7 +95,7 @@ export class TeamGamesEditComponent implements OnInit, OnDestroy {
             (gameData && this.currentMember.is_admin) ||
             (gameData &&
               gameData.creator_id === this.currentMember.user._id_user &&
-              new Date(gameData.close_at).getTime() - new Date().getTime()) > 0
+              new Date(gameData.close_at).getTime() - this.appInfoService.appDate().getTime()) > 0
           ) {
             // Set team ID
             this.gameID = gameID;

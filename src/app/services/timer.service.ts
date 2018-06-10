@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import * as moment from 'moment';
+import { AppInfoService } from './appinfo.service';
 
 @Injectable()
 export class TimerService {
@@ -10,7 +11,7 @@ export class TimerService {
   private closeAt: any;
   private closeNow: BehaviorSubject<boolean>;
 
-  constructor() {
+  constructor(private appInfoService: AppInfoService) {
     this.isClosed = true;
     this.closeNow = new BehaviorSubject(null);
   }
@@ -31,7 +32,7 @@ export class TimerService {
 
     // Check dates differences in seconds
     this.dateDiff = Math.round(
-      (new Date(closeAt).getTime() - new Date().getTime()) / 1000
+      (new Date(closeAt).getTime() - this.appInfoService.appDate().getTime()) / 1000
     );
 
     // Check if game is close

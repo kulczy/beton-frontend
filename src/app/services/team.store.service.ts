@@ -3,12 +3,13 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { Member, Team, Game, Type } from '../models';
+import { AppInfoService } from './appinfo.service';
 
 @Injectable()
 export class TeamStoreService {
   private team: BehaviorSubject<Team>;
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private appInfoService: AppInfoService) {
     this.team = new BehaviorSubject(null);
   }
 
@@ -173,7 +174,7 @@ export class TeamStoreService {
 
     // Split games to open and slode
     games.forEach((g) => {
-      if (new Date(g.close_at).getTime() > new Date().getTime()) {
+      if (new Date(g.close_at).getTime() > this.appInfoService.appDate().getTime()) {
         gamesOpen.push(g);
       } else {
         gamesClosed.push(g);

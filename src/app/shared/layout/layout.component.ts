@@ -10,6 +10,7 @@ import { UserApiService } from '../../services/user.api.service';
 import { User } from '../../models';
 import { UserStoreService } from '../../services/user.store.service';
 import { AppInfoService } from '../../services/appinfo.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-layout',
@@ -20,6 +21,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   isLoadedMembership = false;
   isLoadedUser = false;
   breadcrumbs = null;
+  currentTime: any;
 
   constructor(
     private authService: AuthService,
@@ -48,12 +50,14 @@ export class LayoutComponent implements OnInit, OnDestroy {
       });
 
     // Get user data from API and send to store
+    // Set app date base from server date
     this.userApiService
       .getUserByID(this.authService.getUserID())
       .pipe(takeUntil(this.unsubscribe))
-      .subscribe((resp: User) => {
-        this.userStoreService.setUser(resp);
+      .subscribe((resp) => {
+        this.userStoreService.setUser(resp.user);
         this.isLoadedUser = true;
+        this.appinfoService.setDate(resp.serverTime);
       });
 
     // Get breadcrumps
@@ -66,6 +70,18 @@ export class LayoutComponent implements OnInit, OnDestroy {
       .subscribe((resp) => {
         this.breadcrumbs = resp;
       });
+
+    // Get current time if local storage allow
+    if (localStorage.getItem('beton:clock')) {
+      this.appinfoService
+        .getDate()
+        .pipe(takeUntil(this.unsubscribe))
+        .subscribe((resp: Date) => {
+          if (resp) {
+            this.currentTime = moment(resp).format('DD.MM.YYYY, HH:mm:ss');
+          }
+        });
+    }
   }
 
   ngOnDestroy(): void {

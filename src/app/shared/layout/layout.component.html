@@ -24,7 +24,10 @@
       <!-- User menu -->
       <div class="col-auto">
         <div class="row align-items-center">
-          <div class="col-auto">          
+          <div *ngIf="currentTime" class="col-auto d-none d-lg-block">   
+            <small class="text-muted">{{ currentTime }}</small>
+          </div>
+          <div class="col-auto">   
             <app-notifications></app-notifications>
           </div>
           <div class="col">
