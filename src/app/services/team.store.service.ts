@@ -35,6 +35,13 @@ export class TeamStoreService {
   }
 
   /**
+   * Get team URL value
+   */
+  getTeamURL(): string {
+    return this.team.getValue().url;
+  }
+
+  /**
    * Set new team
    * @param team
    */

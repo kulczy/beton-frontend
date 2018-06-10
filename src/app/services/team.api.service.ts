@@ -57,6 +57,16 @@ export class TeamApiService {
   }
 
   /**
+   * Get team statistics
+   * @param teamURL team url
+   */
+  getTeamStatistics(teamURL): Observable<any> {
+    return this.http
+      .get(`${API_PATH}statistics/${teamURL}`)
+      .pipe(catchError((err, caught) => empty()));
+  }
+
+  /**
    * Update team data
    * @param teamID
    * @param teamData

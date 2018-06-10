@@ -4,6 +4,9 @@
       <a class="nav-link" routerLink="./" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
         <i class="fas fa-trophy text-gray-600"></i> Games
       </a>
+      <a class="nav-link" routerLink="./statistics" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <i class="fas fa-chart-pie text-gray-600"></i> Statistics
+      </a>
       <a class="nav-link" *ngIf="currentMember.is_admin" routerLink="./edit" routerLinkActive="active">
         <i class="fas fa-sliders-h text-gray-600"></i> Settings
       </a>

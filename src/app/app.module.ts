@@ -5,6 +5,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FacebookModule } from 'ngx-facebook';
+// import { ChartsModule } from 'ng2-charts';
 
 // Routes
 import { baseRoutes } from './app.routes';
@@ -57,6 +58,7 @@ import { GameInfoComponent } from './pages/team-games/game-info/game-info.compon
 import { UserMenuComponent } from './shared/user-menu/user-menu.component';
 import { AlertComponent } from './shared/alert/alert.component';
 import { HeaderComponent } from './shared/header/header.component';
+import { TeamStatisticsComponent } from './pages/team-statistics/team-statistics.component';
 
 
 @NgModule({
@@ -81,7 +83,8 @@ import { HeaderComponent } from './shared/header/header.component';
     GameInfoComponent,
     UserMenuComponent,
     AlertComponent,
-    HeaderComponent
+    HeaderComponent,
+    TeamStatisticsComponent
   ],
   imports: [
     BrowserModule,
@@ -95,7 +98,8 @@ import { HeaderComponent } from './shared/header/header.component';
     FacebookModule.forRoot(),
     BsDatepickerModule.forRoot(),
     TimepickerModule.forRoot(),
-    BsDropdownModule.forRoot()
+    BsDropdownModule.forRoot(),
+    // ChartsModule
   ],
   providers: [
     AuthService,

@@ -16,6 +16,10 @@
   color: $gray-300;
 }
 
+.text-size-lg {
+  font-size: 40px;
+}
+
 // Inverse mode
 .nu-inverse {
   color: $gray-200;
@@ -164,4 +168,14 @@ input:-webkit-autofill:active {
   bottom: 30px;
   left: 30px;
   z-index: 9999999;
+}
+
+// Round photo
+.round-photo {
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  overflow: hidden;
+  box-shadow: $nu-card-shadow-strong;
+  img { width: 100%; }
 }

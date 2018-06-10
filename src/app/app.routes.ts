@@ -17,6 +17,7 @@ import { TeamGamesComponent } from './pages/team-games/team-games.component';
 import { TeamGamesEditComponent } from './pages/team-games-edit/team-games-edit.component';
 import { TeamsComponent } from './pages/teams/teams.component';
 import { TeamsAddComponent } from './pages/teams-add/teams-add.component';
+import { TeamStatisticsComponent } from './pages/team-statistics/team-statistics.component';
 
 // Games edit routes - /app/team/:URL/game/
 const teamSubRoutes: Routes = [
@@ -27,7 +28,8 @@ const teamSubRoutes: Routes = [
 // Team routes /app/team/:URL/
 const teamRoutes: Routes = [
   { path: '', component: TeamGamesComponent, children: teamSubRoutes }, // app/team/:URL
-  { path: 'edit', component: TeamEditComponent, canActivate: [AdminGuard] } // app/team/:URL/edit
+  { path: 'edit', component: TeamEditComponent, canActivate: [AdminGuard] }, // app/team/:URL/edit
+  { path: 'statistics', component: TeamStatisticsComponent } // app/team/:URL/statistics
 ];
 
 // Teams routes /app/teams/
