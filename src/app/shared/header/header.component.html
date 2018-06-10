@@ -1,0 +1,15 @@
+<div [ngClass]="{'container' : container}" [@inOut]>
+  <div class="nu-header no-gutters row align-items-center align-content-center justify-content-center">
+    <div *ngIf="back" class="col-auto d-none d-md-block">
+      <a routerLink="/app" class="btn btn-link nu-inverse">
+        <i class="fas fa-angle-left"></i>
+      </a>
+    </div>
+    <div class="col text-center text-md-left">
+      <h1 class="text-white">{{ title }}</h1>
+    </div>
+    <div class="col-12 col-md-auto">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>

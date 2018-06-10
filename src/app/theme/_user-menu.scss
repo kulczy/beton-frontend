@@ -1,0 +1,17 @@
+.nu-user-menu {  
+  .dropdown-item, .dropdown-item:hover {
+    color: $link-color;
+  }
+}
+
+.nu-user-menu__btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: $nu-navbar-height - 20px;
+  cursor: pointer;
+
+  &:hover {
+    color: #fff;
+  }
+}

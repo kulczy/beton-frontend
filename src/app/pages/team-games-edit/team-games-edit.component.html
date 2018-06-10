@@ -1,4 +1,4 @@
-<div class="modal show" tabindex="-1" role="dialog" style="display: block;">
+<div [@inOut] class="modal show" tabindex="-1" role="dialog" style="display: block;">
   <div class="modal-dialog modal-dialog-centered" role="document">
   <div class="modal-content">
       <div class="modal-header">
@@ -9,20 +9,44 @@
       </div>
       
       <form [formGroup]="formControl" (ngSubmit)="onSubmit()">
-        <div class="modal-body">                                                  
-          <input class="form-control" type="text" formControlName="close_at_date" placeholder="Datepicker" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY' }">          
-          <timepicker formControlName="close_at_time" [showMeridian]="isMeridian" [minuteStep]="30"></timepicker>
-          <input class="form-control" type="text" formControlName="player_a" placeholder="player_a">
-          <input class="form-control" type="text" formControlName="player_b" placeholder="player_b">
-          <input class="form-control" type="text" formControlName="score_a" placeholder="score_a">
-          <input class="form-control" type="text" formControlName="score_b" placeholder="score_b">
+        <div class="modal-body">
+          <div class="row align-items-center nu-game-modal__close">            
+            <div class="col-12 col-sm-8">
+              <label for="close_at"><strong>Close at</strong></label>
+              <input class="form-control" type="text" formControlName="close_at_date" bsDatepicker [bsConfig]="dataPickerSettings" id="close_at">          
+              <label for="" class="d-none d-sm-block">&nbsp;</label>
+            </div>
+            <div class="col-12 col-sm-4">
+              <div class="nu-game-modal__timepicker">
+                <timepicker formControlName="close_at_time" [showMeridian]="isMeridian" [minuteStep]="30"></timepicker>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <label for="player_a"><strong>Player A</strong></label>
+              <input class="form-control" type="text" formControlName="player_a" placeholder="Player A" id="player_a">
+            </div>
+            <div class="col-6">
+              <label for="player_b"><strong>Player B</strong></label>
+              <input class="form-control" type="text" formControlName="player_b" placeholder="Player B" id="player_b">
+            </div>
+          </div>
         </div>
-        <div class="modal-footer">
-            <button [routerLink]="['/app/team', teamURL]" type="button" class="btn btn-secondary">Close</button>
-            <button *ngIf="gameID" (click)="onDelete()" type="button" class="btn btn-danger">Delete</button>
-            <button [disabled]="!formControl.valid" type="submit" class="btn btn-primary">
-                {{ isLoading ? 'loading...' : 'Save changes' }}
-            </button>
+        <div class="row bg-primary py-4 mt-4 justify-content-center nu-game-modal__score">
+          <div class="col-auto">
+            <input class="form-control" type="text" formControlName="score_a" placeholder="A">
+          </div>
+          <div class="col-auto">
+            <input class="form-control" type="text" formControlName="score_b" placeholder="B">
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="row justify-content-end no-gutters">
+            <div *ngIf="gameID" class="col"><button (click)="onDelete()" type="button" class="btn btn-link text-danger">Delete</button></div>
+            <div class="col-auto"><button [routerLink]="['/app/team', teamURL]" type="button" class="btn btn-link">Close</button></div>
+            <div class="col-auto"><button [disabled]="!formControl.valid" type="submit" class="btn btn-primary">{{ isLoading ? 'loading...' : 'Save changes' }}</button></div>
+          </div>
         </div>
     </form>
 

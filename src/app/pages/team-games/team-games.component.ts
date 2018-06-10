@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { TeamStoreService } from '../../services/team.store.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -8,7 +8,7 @@ import { Team, Type, Member } from '../../models';
   selector: 'app-team-games',
   templateUrl: './team-games.component.html'
 })
-export class TeamGamesComponent implements OnInit, OnDestroy {
+export class TeamGamesComponent implements OnInit, OnDestroy, AfterViewInit {
   private unsubscribe = new Subject<void>();
   team: Team;
   currentMember: Member;
@@ -29,6 +29,37 @@ export class TeamGamesComponent implements OnInit, OnDestroy {
         this.team = newTeam;
         this.currentMember = resp.currentMember;
       });
+  }
+
+  // Fixed names
+  ngAfterViewInit(): void {
+    // Get all fixed names
+    const fixedNames = document.querySelectorAll('.is-fixed');
+    // Get first name element
+    const name = document.querySelector('.is-fixed-wrapper');
+    // Get initial Y of names
+    const rect: any = name.getBoundingClientRect();
+    const y = (rect.y * -1) - 16;
+    // Set position on init
+    for (let i = 0; i < fixedNames.length; ++i) {
+      fixedNames[i].setAttribute('style', `top: ${y}px`);
+    }
+
+    // Scroll
+    window.onscroll = () => {
+      const newRect: any = name.getBoundingClientRect();
+      const newY = (newRect.y * -1) - 16;
+
+      for (let i = 0; i < fixedNames.length; ++i) {
+        fixedNames[i].setAttribute('style', `top: ${newY}px`);
+
+        if (newY < 20) {
+          fixedNames[i].classList.add('hide');
+        } else {
+          fixedNames[i].classList.remove('hide');
+        }
+      }
+    };
   }
 
   ngOnDestroy(): void {

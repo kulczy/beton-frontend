@@ -8,10 +8,12 @@ import { TeamStoreService } from '../../services/team.store.service';
 import { GameApiService } from '../../services/game.api.service';
 import { Game, Member } from '../../models';
 import { AlertService } from '../../services/alert.service';
+import { inOut } from '../../utils/animation';
 
 @Component({
   selector: 'app-team-games-edit',
-  templateUrl: './team-games-edit.component.html'
+  templateUrl: './team-games-edit.component.html',
+  animations: [inOut]
 })
 export class TeamGamesEditComponent implements OnInit, OnDestroy {
   private unsubscribe = new Subject<void>();
@@ -24,6 +26,12 @@ export class TeamGamesEditComponent implements OnInit, OnDestroy {
   currentMember: Member;
   // Date and time settings
   isMeridian = false;
+  dataPickerSettings = {
+    dateInputFormat: 'DD.MM.YYYY',
+    containerClass: 'theme-dark-blue',
+    minDate: new Date(),
+    showWeekNumbers: false
+  };
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -46,10 +54,16 @@ export class TeamGamesEditComponent implements OnInit, OnDestroy {
     this.formControl = this.fb.group({
       close_at_date: [initDate, [Validators.required]],
       close_at_time: [initDate, [Validators.required]],
-      player_a: ['', [Validators.required]],
-      player_b: ['', [Validators.required]],
-      score_a: ['', [Validators.pattern('^[0-9]*$')]],
-      score_b: ['', [Validators.pattern('^[0-9]*$')]]
+      player_a: [
+        '',
+        [Validators.required, Validators.minLength(2), Validators.maxLength(20)]
+      ],
+      player_b: [
+        '',
+        [Validators.required, Validators.minLength(2), Validators.maxLength(20)]
+      ],
+      score_a: ['', [Validators.pattern('^[0-9]*$'), Validators.maxLength(10)]],
+      score_b: ['', [Validators.pattern('^[0-9]*$'), Validators.maxLength(10)]]
     });
 
     // Set team data
@@ -112,6 +126,7 @@ export class TeamGamesEditComponent implements OnInit, OnDestroy {
    * Save game
    */
   onSubmit(): void {
+    this.isLoading = true;
     // Get full date in UTC
     const date = moment(this.formControl.controls.close_at_date.value).format(
       'DD/MM/YYYY'
@@ -129,8 +144,12 @@ export class TeamGamesEditComponent implements OnInit, OnDestroy {
       id_team: this.teamID,
       player_a: this.formControl.controls.player_a.value,
       player_b: this.formControl.controls.player_b.value,
-      score_a: this.formControl.controls.score_a.value || null,
-      score_b: this.formControl.controls.score_b.value || null
+      score_a: this.formControl.controls.score_a.value
+        ? Number(this.formControl.controls.score_a.value)
+        : null,
+      score_b: this.formControl.controls.score_b.value
+        ? Number(this.formControl.controls.score_b.value)
+        : null
     };
 
     // Insert new game
@@ -139,6 +158,7 @@ export class TeamGamesEditComponent implements OnInit, OnDestroy {
         .addGame(newGame)
         .pipe(takeUntil(this.unsubscribe))
         .subscribe((resp) => {
+          this.isLoading = false;
           this.alertService.showAlert('gameAdded');
           this.router.navigate(['/app/team', this.teamURL]);
         });
@@ -150,6 +170,7 @@ export class TeamGamesEditComponent implements OnInit, OnDestroy {
         .updateGame(this.gameID, newGame)
         .pipe(takeUntil(this.unsubscribe))
         .subscribe((resp) => {
+          this.isLoading = false;
           this.alertService.showAlert('gameUpdated');
           this.router.navigate(['/app/team', this.teamURL]);
         });
@@ -160,12 +181,15 @@ export class TeamGamesEditComponent implements OnInit, OnDestroy {
    * Delete game
    */
   onDelete(): void {
-    this.gameApiService
-      .deleteGame(this.gameID, this.teamID)
-      .pipe(takeUntil(this.unsubscribe))
-      .subscribe((resp) => {
-        this.alertService.showAlert('gameRemoved');
-        this.router.navigate(['/app/team', this.teamURL]);
-      });
+    const conf = confirm('Are you sure you want to delete the game?');
+    if (conf === true) {
+      this.gameApiService
+        .deleteGame(this.gameID, this.teamID)
+        .pipe(takeUntil(this.unsubscribe))
+        .subscribe((resp) => {
+          this.alertService.showAlert('gameRemoved');
+          this.router.navigate(['/app/team', this.teamURL]);
+        });
+    }
   }
 }

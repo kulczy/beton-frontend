@@ -16,6 +16,7 @@ export class TeamEditCardComponent implements OnInit, OnDestroy {
   private unsubscribe = new Subject<void>();
   @Input() team: Team;
   formControl: FormGroup;
+  isLoading: boolean;
 
   constructor(
     private fb: FormBuilder,
@@ -28,7 +29,10 @@ export class TeamEditCardComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // Init form
     this.formControl = this.fb.group({
-      name: [this.team.name, [Validators.required, Validators.minLength(3)]]
+      name: [
+        this.team.name,
+        [Validators.required, Validators.minLength(3), Validators.maxLength(40)]
+      ]
     });
   }
 
@@ -39,12 +43,14 @@ export class TeamEditCardComponent implements OnInit, OnDestroy {
 
   onSubmit(): void {
     if (this.formControl.valid) {
+      this.isLoading = true;
       this.teamApiService
         .updateTeam(this.team._id_team, {
           name: this.formControl.controls.name.value
         })
         .pipe(takeUntil(this.unsubscribe))
         .subscribe((resp) => {
+          this.isLoading = false;
           this.teamStoreService.updateTeam({
             name: this.formControl.controls.name.value
           });
@@ -54,13 +60,16 @@ export class TeamEditCardComponent implements OnInit, OnDestroy {
   }
 
   onDelete(): void {
-    this.teamApiService
-      .deleteTeam(this.team._id_team)
-      .pipe(takeUntil(this.unsubscribe))
-      .subscribe((resp) => {
-        // this.router.navigate(['/app']);
-      });
+    const conf = confirm('Are you sure you want to delete the team?');
+    if (conf === true) {
+      this.teamApiService
+        .deleteTeam(this.team._id_team)
+        .pipe(takeUntil(this.unsubscribe))
+        .subscribe((resp) => {
+          // this.router.navigate(['/app']);
+        });
 
-    this.alertService.showAlert('teamRemoved');
+      this.alertService.showAlert('teamRemoved');
+    }
   }
 }

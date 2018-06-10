@@ -4,11 +4,12 @@ import { AuthService } from '../../services/auth.service';
 import { MemberSocketService } from '../../services/member.socket.service';
 import { MemberStoreService } from '../../services/member.store.service';
 import { TeamApiService } from '../../services/team.api.service';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, delay } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { UserApiService } from '../../services/user.api.service';
 import { User } from '../../models';
 import { UserStoreService } from '../../services/user.store.service';
+import { AppInfoService } from '../../services/appinfo.service';
 
 @Component({
   selector: 'app-layout',
@@ -18,6 +19,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   private unsubscribe = new Subject<void>();
   isLoadedMembership = false;
   isLoadedUser = false;
+  breadcrumbs = null;
 
   constructor(
     private authService: AuthService,
@@ -26,7 +28,8 @@ export class LayoutComponent implements OnInit, OnDestroy {
     private userApiService: UserApiService,
     private userStoreService: UserStoreService,
     private memberStoreService: MemberStoreService,
-    private memberSocketService: MemberSocketService
+    private memberSocketService: MemberSocketService,
+    private appinfoService: AppInfoService
   ) {}
 
   ngOnInit(): void {
@@ -51,6 +54,17 @@ export class LayoutComponent implements OnInit, OnDestroy {
       .subscribe((resp: User) => {
         this.userStoreService.setUser(resp);
         this.isLoadedUser = true;
+      });
+
+    // Get breadcrumps
+    this.appinfoService
+      .getBreadcrumps()
+      .pipe(
+        takeUntil(this.unsubscribe),
+        delay(10)
+      )
+      .subscribe((resp) => {
+        this.breadcrumbs = resp;
       });
   }
 

@@ -8,6 +8,7 @@ import { User } from '../../models';
 import { Router } from '@angular/router';
 import { UserStoreService } from '../../services/user.store.service';
 import { AlertService } from '../../services/alert.service';
+import { AppInfoService } from '../../services/appinfo.service';
 
 @Component({
   selector: 'app-account',
@@ -25,7 +26,8 @@ export class AccountComponent implements OnInit, OnDestroy {
     private userStoreService: UserStoreService,
     private authService: AuthService,
     private router: Router,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private appInfoService: AppInfoService
   ) {}
 
   ngOnInit(): void {
@@ -49,6 +51,15 @@ export class AccountComponent implements OnInit, OnDestroy {
           public: this.user.is_public === 1 ? true : false
         });
       });
+
+    // Set breadcrumps
+    this.appInfoService.setBreadcrumps([
+      {
+        title: 'Account',
+        isActive: true,
+        link: null
+      }
+    ]);
   }
 
   ngOnDestroy(): void {
@@ -66,10 +77,12 @@ export class AccountComponent implements OnInit, OnDestroy {
     };
 
     if (this.formControl.valid) {
+      this.isLoading = true;
       this.userApiService
         .updateUser(this.authService.getUserID(), newUserData)
         .pipe(takeUntil(this.unsubscribe))
         .subscribe((resp) => {
+          this.isLoading = false;
           this.alertService.showAlert('userUpdated');
           this.userStoreService.updateUser(newUserData);
         });
@@ -80,16 +93,19 @@ export class AccountComponent implements OnInit, OnDestroy {
    * Delete user
    */
   onDelete(): void {
-    this.userApiService
-      .deleteUser(this.authService.getUserID())
-      .pipe(takeUntil(this.unsubscribe))
-      .subscribe((resp) => {
-        if (resp.deleted) {
-          this.router.navigate(['/']);
-          this.authService.logout();
-        } else {
-          this.alertService.showAlert('userDeleteReject');
-        }
-      });
+    const conf = confirm('Are you sure you want to delete your account?');
+    if (conf === true) {
+      this.userApiService
+        .deleteUser(this.authService.getUserID())
+        .pipe(takeUntil(this.unsubscribe))
+        .subscribe((resp) => {
+          if (resp.deleted) {
+            this.router.navigate(['/']);
+            this.authService.logout();
+          } else {
+            this.alertService.showAlert('userDeleteReject');
+          }
+        });
+    }
   }
 }

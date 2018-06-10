@@ -9,6 +9,7 @@ import { MemberApiService } from '../../services/member.api.service';
 import { AuthService } from '../../services/auth.service';
 import { TeamSocketService } from '../../services/team.socket.service';
 import { AlertService } from '../../services/alert.service';
+import { AppInfoService } from '../../services/appinfo.service';
 
 @Component({
   selector: 'app-team',
@@ -28,7 +29,8 @@ export class TeamComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private router: Router,
     private teamSocketService: TeamSocketService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private appInfoService: AppInfoService
   ) {}
 
   ngOnInit(): void {
@@ -47,6 +49,20 @@ export class TeamComponent implements OnInit, OnDestroy {
         .subscribe((resp: Team) => {
           this.teamStoreService.setTeam(resp); // Set team to store
           this.teamSocketService.socketConnect(resp._id_team); // Connect to socket
+
+          // Set breadcrumps
+          this.appInfoService.setBreadcrumps([
+            {
+              title: 'Teams',
+              isActive: false,
+              link: '/app'
+            },
+            {
+              title: resp.name,
+              isActive: true,
+              link: null
+            }
+          ]);
         });
     });
 

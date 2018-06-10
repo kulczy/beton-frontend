@@ -1,0 +1,353 @@
+$scorble-left-width: 370px;
+$scorble-breakpoint: map-get($grid-breakpoints , lg);
+$scorble-score-minwidth: 120px;
+$scorble-row-height: 70px;
+$scorble-row-height-head: 140px;
+
+// Grid
+.scorble {
+	position: relative;
+
+	.scorble__left {
+		position: absolute;		
+		width: $scorble-left-width;
+		z-index: 1;
+    pointer-events: none;
+	}
+
+	.scorble__right {
+		padding-left: $scorble-left-width;
+		// overflow-x: scroll;
+		overflow-x: auto;
+	}
+
+	.scorble__row {
+		display: inline-flex;
+		height: $scorble-row-height;
+		min-width: 100%;
+	}
+	
+	.scorble__info {
+		width: 100%;
+		pointer-events: all;
+	}
+
+	.scorble__score {
+    flex-grow: 1;
+    flex-basis: 0;
+		min-width: $scorble-score-minwidth;
+	}
+}
+
+@media (max-width: $scorble-breakpoint) {
+	.scorble {
+		.scorble__left {
+			width: 100%;
+			.scorble__row { margin-bottom: $scorble-row-height; }
+      // .scorble__row--head { margin-bottom: $scorble-row-height-head; }
+      padding-top: $scorble-row-height-head;
+		}
+
+		.scorble__right {
+			width: 100%;
+			padding-left: 0;
+			.scorble__row { margin-top: $scorble-row-height; }
+			// .scorble__row--head { margin-top: $scorble-row-height-head; }
+			.scorble__row--head { margin-top: 0; }
+		}
+	}
+}
+
+
+// Head (button and members)
+.scorble {
+  @media (max-width: $scorble-breakpoint) {
+    .scorble__left .scorble__row--head { display: none; }
+  }
+
+	.scorble__row.scorble__row--head {
+    height: $scorble-row-height-head;
+    align-items: flex-start;
+    // padding: 0 10px 0 10px;
+    overflow: visible; //
+    // z-index: 999;
+    // position: relative;
+
+    .scorble__info {
+      justify-content: center;
+      padding-top: 25px;
+    }
+
+    .scorble__score {
+      flex-direction: column;
+      justify-content: flex-start;
+      overflow: visible; //
+      height: 100%;
+      padding-top: 25px;
+    }
+
+    // Sticky
+    .is-fixed-wrapper {
+      position: relative;
+      width: 100%;
+      text-align: center;
+      z-index: 998;
+
+      .is-fixed {
+        position: absolute;
+        top: 0;              
+        width: 100%; 
+        height: 50px;
+        overflow: hidden;
+        background: #fff;        
+        transition: none;
+        box-shadow: inset 1px -1px 0 rgba($gray-200, 0.5);
+        
+        > div {
+          padding-top: 13px;
+        }
+        
+        &.hide { display: none; }
+      }
+    }
+  }  
+
+  .scorable__member-name {    
+    font-weight: 500;
+    margin-top: 15px;
+    white-space: nowrap;
+
+    @media (max-width: $scorble-breakpoint + 1) {
+      font-size: $font-size-sm;
+    }
+  }
+}
+
+.scorable__member-photo {
+  width: 46px;
+  height: 46px;
+  overflow: hidden;
+  border-radius: 999px;
+  box-shadow: $nu-card-shadow-strong;
+
+  img { width: 100%; }
+}
+
+
+// Styling
+.scorble {
+	.scorble__left {
+    overflow: hidden;
+
+    @media (min-width: $scorble-breakpoint + 1) {
+      box-shadow: $nu-card-shadow-strong;
+      border-radius: 5px 0 0 5px;
+
+      .scorble__row {
+        box-shadow: inset 0 1px 0 rgba($gray-800, .05);
+        background: #fff;        
+      }
+    }
+
+    @media (max-width: $scorble-breakpoint) {
+      padding-left: 10px;
+      padding-right: 10px;
+
+      .scorble__row {
+        background-color: rgba($gray-100, 1);
+        border-radius: 5px;
+        overflow: hidden;
+
+        .scorble__info {          
+          color: $gray-500;
+          padding-left: 0;
+          
+          .scorble__info__content {
+            height: 100%;
+            
+            .scorable__type {
+              height: 100%;
+              border-radius: 0;
+              background: $gray-700;
+              color: #fff;
+              font-size: $font-size-sm;
+            }            
+          }    
+
+          .scorble__players {
+            font-size: $font-size-sm;
+          }
+        }
+      }
+    }
+	}
+
+	.scorble__right {
+    .scorble__row {
+      @media (min-width: $scorble-breakpoint + 1) {
+        &:nth-child(even) {
+          background-color: rgba($gray-100, .7);
+        }
+      }
+    }
+  }
+
+	.scorble__info {
+    position: relative;
+		display: flex;
+		align-items: center;
+		padding-left: 30px;
+		padding-right: 30px;
+	}
+	
+	.scorble__score {
+		display: flex;
+    justify-content: center;
+    align-items: center;
+    
+		&:not(:last-child) {
+      box-shadow: 1px 0 0 rgba($gray-800, .08);
+    }
+  }
+  
+  // Players
+  .scorble__players {
+    font-weight: 500;
+    white-space: nowrap;
+    font-size: 15px;
+    padding-bottom: 4px;
+  }
+
+  // Close date under players
+  .scorble__close {
+    font-size: $small-font-size;
+    color: $gray-300;
+  }
+
+  // Games info
+  .scorble__info__content {
+    margin-right: 25px;    
+    border-radius: 3px;
+
+    &.scorble__info__content--editable {
+      cursor: pointer;
+
+      &:hover {
+        box-shadow: 0px 0px 0px 1px rgba($blue, .5);
+      }
+    }    
+  }
+
+  // Edit icon
+  .scorble__info__edit {
+    position: absolute;
+    top: 16px;
+    left: 28px;
+    width: 5px;
+    height: 5px;
+    border-radius: 99px;
+    background: $blue;
+  }
+
+  // Box wrapper for types
+  .scorable__type {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-width: 1px;
+    border-style: solid;
+    border-color: transparent;
+    min-width: 60px;
+    width: auto;
+    height: 38px;
+    overflow: hidden;
+    white-space: nowrap;
+    border-radius: 3px;
+    font-size: 15px;
+    
+    &.scorable__type--closed {
+      // border-color: rgba($blue, 0);
+      background: #F6F7FC;
+      color: darken($blue, 9%);
+      // color: $primary;
+    }
+
+    &.scorable__type--winner {
+      // border-color: rgba($teal, .3);
+      background: rgba($teal, .2);
+      color: darken($teal, 50%);
+    }
+  }
+}
+
+// Type edit
+.nu-type-edit {
+  position: relative;
+
+  .nu-type-edit__input {
+    width: 50px;
+    text-align: center;
+  }
+
+  .nu-type-edit__button {
+    position: absolute;
+    z-index: 99;
+    bottom: -10px;
+    right: -8px;    
+    
+    .btn { 
+      width: 16px;
+      font-size: 8px;
+
+      i { padding: 0; }
+    }
+  }
+}
+
+// Game edit modal
+.nu-game-modal__score {
+  margin-left: 0;
+  margin-right: 0;
+
+  > div:first-child {
+    position: relative;
+
+    &::after {
+      content: ':';
+      position: absolute;
+      top: 0;
+      right: -7px;
+      font-size: 40px;
+      color: #fff;      
+    }
+  }
+
+  .form-control {
+    font-size: 40px;
+    text-align: center;
+    width: 120px;    
+    border: 0;
+    color: #fff;
+
+    &::placeholder {
+      color: #fff;
+      opacity: .3;
+    }
+  }
+}
+
+
+@include media-breakpoint-down(xs) {
+  .nu-game-modal__close {
+    position: relative;
+    margin-bottom: 40px;
+  
+    .nu-game-modal__timepicker {
+      position: absolute;
+      bottom: -27px;
+      right: 0;
+      background: white;
+      padding-left: 20px;
+    }
+  }
+}

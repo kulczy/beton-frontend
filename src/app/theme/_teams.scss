@@ -1,0 +1,50 @@
+.nu-teams {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;    
+  padding: 20px;
+  transition: all .2s;
+  cursor: pointer;
+  overflow: hidden;
+  text-align: center;
+
+  @include media-breakpoint-down(sm) {
+    min-height: 180px;
+  }
+
+  @include media-breakpoint-up(md) {
+    min-height: 230px;
+  }
+
+  .nu-teams__icon {
+    font-size: 36px;
+    color: $gray-200;
+    padding-bottom: 6px;
+
+    &.nu-teams__icon--admin {
+      color: $gray-200;
+    }
+  }
+
+  .nu-teams__name {
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+
+  .nu-teams__join {
+    font-size: $small-font-size;
+    color: $text-muted;
+    padding-top: 3px;
+  }
+
+  .nu-teams__enter {
+    margin-top: 20px;
+    color: $primary;
+  }
+
+  &:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 .5rem 80px rgba($gray-900, .1);
+  }
+}

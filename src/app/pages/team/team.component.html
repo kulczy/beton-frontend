@@ -1,12 +1,17 @@
 <div *ngIf="team">
-  <nav>
-    <h1>{{ team.name }}</h1>
-    <div routerLink="./">Games</div>
-    <div *ngIf="currentMember.is_admin" routerLink="./edit">Edit</div>
-    <div *ngIf="!currentMember.is_admin" (click)="onLeaveTeam()">Leave the team</div>
-  </nav>
-  
-  <hr>
+  <app-header [title]="team && team.name" [back]="true" [container]="false">
+    <nav class="nav justify-content-center nu-inverse">
+      <a class="nav-link" routerLink="./" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <i class="fas fa-trophy text-gray-600"></i> Games
+      </a>
+      <a class="nav-link" *ngIf="currentMember.is_admin" routerLink="./edit" routerLinkActive="active">
+        <i class="fas fa-sliders-h text-gray-600"></i> Settings
+      </a>
+      <a class="nav-link" *ngIf="!currentMember.is_admin" (click)="onLeaveTeam()">
+        <i class="fas fa-sign-out-alt text-gray-600"></i> Leave the team
+      </a>
+    </nav>
+  </app-header>
   
   <router-outlet></router-outlet>
 </div>

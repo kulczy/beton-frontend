@@ -1,15 +1,22 @@
-<div>
-  {{ game.player_a }} - {{ game.player_b }}
+<div class="scorble__info">
+
+  <!-- Type or timer -->
+  <div class="scorble__info__content" (click)="onEdit()" [ngClass]="{'scorble__info__content--editable': currentMember.user._id_user === game.creator_id && !timerService.isClosed || currentMember.is_admin}">
+    <div class="scorable__type scorable__type--closed" *ngIf="timerService.isClosed">
+      {{ game.score_a }} : {{ game.score_b }}
+    </div>
+    <div class="scorable__type" *ngIf="!timerService.isClosed">
+      {{ timerService.clock }}
+    </div>
+  </div>
+
+  <!-- Info -->
+  <div>
+    <div class="scorble__players">{{ game.player_a }} - {{ game.player_b }}</div>
+    <div class="scorble__close">{{ displayDate(game.close_at) }}</div>
+  </div>
+  
+  <!-- Edit -->      
+  <div class="scorble__info__edit" *ngIf="currentMember.user._id_user === game.creator_id && !timerService.isClosed && !currentMember.is_admin"></div>
 </div>
 
-<div>
-  <span *ngIf="timerService.isClosed">
-    {{ game.score_a }} : {{ game.score_b }}
-  </span>
-  <span *ngIf="!timerService.isClosed">
-    {{ timerService.clock }}
-  </span>
-</div>
-
-<u *ngIf="currentMember.user._id_user === game.creator_id && !timerService.isClosed || currentMember.is_admin" 
-  [routerLink]="['./game', game._id_game]">edit</u>

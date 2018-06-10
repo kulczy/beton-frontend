@@ -1,15 +1,25 @@
-<div class="card mt-5">
-    <div class="card-header">Team edit</div>
-    <div class="card-body">
+<div class="card mb-4">
+  <div class="card-body px-md-5 py-md-5">
+    <h2 class="card-title mb-4">Team</h2>
 
-        <form [formGroup]="formControl" (ngSubmit)="onSubmit()">
-            <input class="form-control" formControlName="name" name="name">
-            <button [disabled]="!formControl.valid" type="submit" class="btn btn-primary">
-                {{ isLoading ? 'loading...' : 'Save' }}
-            </button>
-        </form>
+    <form [formGroup]="formControl" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-12 col-sm-9 mb-3">
+          <input class="form-control" formControlName="name" name="name">
+        </div>
+        <div class="col-12 col-sm-3 mb-4">
+          <button [disabled]="!formControl.valid" type="submit" class="btn btn-primary btn-block">
+            {{ isLoading ? 'loading...' : 'Save' }}
+          </button>
+        </div>
+      </div>   
+    </form>
 
-        <button (click)="onDelete()" class="btn btn-danger" type="button">Delete</button>
-
+    <div class="row mt-5">
+      <div class="col text-right">
+        <button (click)="onDelete()" class="btn btn-danger" type="button">Delete team</button>
+      </div>
     </div>
+
+  </div>
 </div>

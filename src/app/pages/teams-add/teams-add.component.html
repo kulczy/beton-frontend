@@ -1,33 +1,35 @@
-<div *ngIf="canCreate" class="modal show" tabindex="-1" role="dialog" style="display: block;">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Add team</h5>
-                <button routerLink="/app" type="button" class="close" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            
-            <div *ngIf="canCreate === 'yes'">
-                <form [formGroup]="formControl" (ngSubmit)="onSubmit()">
-                    <div class="modal-body">                                        
-                        <app-input-wrapper [value]="formControl.controls['name']" label="Name" errorMsg="Please provide a valid name (min. 3 characters).">
-                            <input class="form-control" formControlName="name" type="text">
-                        </app-input-wrapper>
-                    </div>
-                    <div class="modal-footer">
-                        <button routerLink="/app" type="button" class="btn btn-secondary">Close</button>
-                        <button [disabled]="!formControl.valid" type="submit" class="btn btn-primary">
-                            {{ isLoading ? 'loading...' : 'Save changes' }}
-                        </button>
-                    </div>
-                </form>
-            </div>
-            <div *ngIf="canCreate === 'no'">
-                You can create max. 6 teams
-            </div>
+<div [@inOut] *ngIf="canCreate" class="modal show" tabindex="-1" role="dialog" style="display: block;">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add team</h5>
+        <button routerLink="/app" type="button" class="close" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        
+      <div *ngIf="canCreate === 'yes'">
+        <form [formGroup]="formControl" (ngSubmit)="onSubmit()">
+          <div class="modal-body">                                        
+            <app-input-wrapper [value]="formControl.controls['name']" label="Team name" errorMsg="Please provide a valid name (min. 3 characters).">
+              <input class="form-control" formControlName="name" type="text">
+            </app-input-wrapper>
+          </div>
+          <div class="modal-footer">
+            <button routerLink="/app" type="button" class="btn btn-link">Close</button>
+            <button [disabled]="!formControl.valid" type="submit" class="btn btn-primary">
+              {{ isLoading ? 'loading...' : 'Save changes' }}
+            </button>
+          </div>
+        </form>
+      </div>
+      <div *ngIf="canCreate === 'no'">
+        <div class="h1 text-center text-gray-300 mt-2 mb-5">
+            <i class="far fa-frown display-2"></i><br>You can create <br>6 teams max.
         </div>
+      </div>
     </div>
+  </div>
 </div>
 
 <div class="modal-backdrop show"></div>

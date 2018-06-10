@@ -3,8 +3,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FacebookModule } from 'ngx-facebook';
-
 
 // Routes
 import { baseRoutes } from './app.routes';
@@ -12,6 +12,7 @@ import { baseRoutes } from './app.routes';
 // Ngx
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 // Services nad guards
 import { AuthService } from './services/auth.service';
@@ -21,6 +22,7 @@ import { UserApiService } from './services/user.api.service';
 import { MemberApiService } from './services/member.api.service';
 import { GameApiService } from './services/game.api.service';
 import { TeamApiService } from './services/team.api.service';
+import { AppInfoService } from './services/appinfo.service';
 import { MemberStoreService } from './services/member.store.service';
 import { TeamStoreService } from './services/team.store.service';
 import { UserStoreService } from './services/user.store.service';
@@ -54,6 +56,8 @@ import { GameTypeComponent } from './pages/team-games/game-type/game-type.compon
 import { GameInfoComponent } from './pages/team-games/game-info/game-info.component';
 import { UserMenuComponent } from './shared/user-menu/user-menu.component';
 import { AlertComponent } from './shared/alert/alert.component';
+import { HeaderComponent } from './shared/header/header.component';
+
 
 @NgModule({
   declarations: [
@@ -76,7 +80,8 @@ import { AlertComponent } from './shared/alert/alert.component';
     GameTypeComponent,
     GameInfoComponent,
     UserMenuComponent,
-    AlertComponent
+    AlertComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -86,12 +91,15 @@ import { AlertComponent } from './shared/alert/alert.component';
     ),
     HttpClientModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule,
     FacebookModule.forRoot(),
     BsDatepickerModule.forRoot(),
-    TimepickerModule.forRoot()
+    TimepickerModule.forRoot(),
+    BsDropdownModule.forRoot()
   ],
   providers: [
     AuthService,
+    AppInfoService,
     AlertService,
     AccessService,
     TeamStoreService,

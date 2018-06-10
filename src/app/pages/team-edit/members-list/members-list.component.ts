@@ -48,12 +48,15 @@ export class MembersListComponent implements OnInit, OnDestroy {
    * @param id_team
    */
   onDeleteMember(id_user: number, id_team: number): void {
-    this.memberApiService
-      .deleteMember(id_user, id_team)
-      .pipe(takeUntil(this.unsubscribe))
-      .subscribe((resp) => {
-        this.alertSevice.showAlert('memberRemoved');
-      });
+    const conf = confirm('Are you sure you want to remove the member?');
+    if (conf === true) {
+      this.memberApiService
+        .deleteMember(id_user, id_team)
+        .pipe(takeUntil(this.unsubscribe))
+        .subscribe((resp) => {
+          this.alertSevice.showAlert('memberRemoved');
+        });
+    }
   }
 
   /**
@@ -84,6 +87,7 @@ export class MembersListComponent implements OnInit, OnDestroy {
    */
   onAddMember(): void {
     if (this.formControl.valid) {
+      this.isLoading = true;
       this.memberApiService
         .addMember(
           this.team._id_team,
@@ -92,6 +96,7 @@ export class MembersListComponent implements OnInit, OnDestroy {
         )
         .pipe(takeUntil(this.unsubscribe))
         .subscribe((resp) => {
+          this.isLoading = false;
           // Display message
           this.memberAddFormMsg = resp.msg;
 

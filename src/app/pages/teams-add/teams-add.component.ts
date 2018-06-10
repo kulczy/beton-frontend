@@ -9,10 +9,12 @@ import { MemberApiService } from '../../services/member.api.service';
 import { AuthService } from '../../services/auth.service';
 import { MemberStoreService } from '../../services/member.store.service';
 import { AlertService } from '../../services/alert.service';
+import { inOut } from '../../utils/animation';
 
 @Component({
   selector: 'app-teams-add',
-  templateUrl: './teams-add.component.html'
+  templateUrl: './teams-add.component.html',
+  animations: [inOut]
 })
 export class TeamsAddComponent implements OnInit, OnDestroy {
   private unsubscribe = new Subject<void>();
@@ -33,7 +35,10 @@ export class TeamsAddComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // Create form
     this.formControl = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3)]]
+      name: [
+        '',
+        [Validators.required, Validators.minLength(3), Validators.maxLength(40)]
+      ]
     });
 
     // Check if user can create new team

@@ -4,6 +4,8 @@ import { TimerService } from '../../../services/timer.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { TeamStoreService } from '../../../services/team.store.service';
+import * as moment from 'moment';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-game-info',
@@ -22,7 +24,9 @@ export class GameInfoComponent implements OnInit, OnDestroy {
 
   constructor(
     private timerService: TimerService,
-    private teamStoreService: TeamStoreService
+    private teamStoreService: TeamStoreService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -40,5 +44,21 @@ export class GameInfoComponent implements OnInit, OnDestroy {
     this.timerService.clearInterval();
     this.unsubscribe.next();
     this.unsubscribe.complete();
+  }
+
+  displayDate(date: any): string {
+    return `${moment(date).format('DD.MM.YYYY, HH:mm')}`;
+  }
+
+  onEdit() {
+    if (
+      (this.currentMember.user._id_user === this.game.creator_id &&
+        !this.timerService.isClosed) ||
+      this.currentMember.is_admin
+    ) {
+      this.router.navigate(['../game', this.game._id_game], {
+        relativeTo: this.activatedRoute
+      });
+    }
   }
 }

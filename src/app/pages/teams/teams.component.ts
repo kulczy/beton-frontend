@@ -5,10 +5,14 @@ import { takeUntil } from 'rxjs/operators';
 import { TeamApiService } from '../../services/team.api.service';
 import { Member } from '../../models';
 import { MemberStoreService } from '../../services/member.store.service';
+import { AppInfoService } from '../../services/appinfo.service';
+import * as moment from 'moment';
+import { listIn } from '../../utils/animation';
 
 @Component({
   selector: 'app-teams',
-  templateUrl: './teams.component.html'
+  templateUrl: './teams.component.html',
+  animations: [listIn]
 })
 export class TeamsComponent implements OnInit, OnDestroy {
   private unsubscribe = new Subject<void>();
@@ -17,7 +21,8 @@ export class TeamsComponent implements OnInit, OnDestroy {
 
   constructor(
     private teamApiService: TeamApiService,
-    private memberStoreService: MemberStoreService
+    private memberStoreService: MemberStoreService,
+    private appInfoService: AppInfoService
   ) {}
 
   ngOnInit() {
@@ -40,10 +45,23 @@ export class TeamsComponent implements OnInit, OnDestroy {
         this.isLoading = false;
         this.memberStoreService.setMemberships(resp.resp);
       });
+
+    // Set breadcrumps
+    this.appInfoService.setBreadcrumps([
+      {
+        title: 'Teams',
+        isActive: true,
+        link: null
+      }
+    ]);
   }
 
   ngOnDestroy(): void {
     this.unsubscribe.next();
     this.unsubscribe.complete();
+  }
+
+  displayJoin(date: any): string {
+    return `joined: ${moment(date).format('DD.MM.YYYY')}`;
   }
 }

@@ -1,45 +1,53 @@
-<div *ngIf="currentMember">
-    <h1>Games</h1>    
-
-    <div class="d-flex">
-      <!-- Left -->
-      <div style="width: 300px">
-
-        <!-- Add game button -->
-        <div style="height: 80px; border-bottom: 1px solid #eee">
-            <button routerLink="./game" class="btn btn-primary" type="button">Add new game</button>
+<div class="card">
+  <div class="scorble" *ngIf="currentMember">
+    <div class="scorble__left">
+  
+      <!-- Add game button -->
+      <div class="scorble__row scorble__row--head">
+        <div class="scorble__info">
+          <a routerLink="./game" class="btn btn-round btn-primary btn-lg">Add game</a>
         </div>
-
-        <!-- Game info -->
-        <div *ngFor="let game of team.games" style="height: 120px; border-bottom: 1px solid #eee">
-          <app-game-info [gameData]="game" [currentMember]="currentMember"></app-game-info>
-        </div>
-
       </div>
-
-      <!-- Rigth -->
-      <div>
-
-        <!-- Members name columns -->
-        <div style="height: 80px; border-bottom: 1px solid #eee">
-          <div *ngFor="let member of team.members" style="width: 60px" style="display: inline-block; width: 250px; padding: 0 30px">
-            {{ member.user.username }} (id: {{ member.user._id_user }})
-          </div>
-        </div>
-
-        <!-- Game types -->
-        <div *ngFor="let game of team.games" style="height: 120px; border-bottom: 1px solid #eee">
-          <app-game-type 
-            [teamID]="team._id_team"
-            [gameData]="game" 
-            [members]="team.members" 
-            [types]="team.types"
-            [currentMember]="currentMember">
-          </app-game-type>
-        </div>
-
-      </div>
+      
+      <!-- Game info -->
+      <app-game-info 
+        class="scorble__row"
+        *ngFor="let game of team.games" 
+        [gameData]="game" 
+        [currentMember]="currentMember">
+      </app-game-info>
+      
     </div>
+    <div class="scorble__right">
+  
+      <!-- Members list -->
+      <div class="scorble__row scorble__row--head">
+        <div class="scorble__score" *ngFor="let member of team.members">
+          <div class="scorable__member-photo"><img src="{{ member.user.photo }}" alt="photo"></div>
+          <div class="scorable__member-name is-fixed-wrapper">
+            <div class="scorable__member-name is-fixed"><div>{{ member.user.username }}</div></div>
+            {{ member.user.username }}
+          </div>          
+        </div>
+      </div>
+      
+      <!-- Game types -->      
+      <app-game-type 
+        class="scorble__row" 
+        *ngFor="let game of team.games" 
+        [teamID]="team._id_team"
+        [gameData]="game" 
+        [members]="team.members" 
+        [types]="team.types"
+        [currentMember]="currentMember">
+      </app-game-type>
+  
+    </div>
+  </div>
 </div>
+
+<a class="fixed-add" routerLink="./game">
+  <i class="fas fa-plus"></i>
+</a>
 
 <router-outlet></router-outlet>

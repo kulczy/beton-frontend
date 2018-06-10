@@ -1,10 +1,27 @@
-<div *ngFor="let team of members">
-  <div class="card">
-    <div class="card-body">
-        <div><small>{{ team.inviting_data ? team.inviting_data.username : 'someone' }} invite you to join:</small></div>
-        <div>{{ team.team.name }}</div> 
-        <button (click)="onAcceptInvite(team._id_member, team.id_team)" class="btn btn-success" type="button">Accept</button>
-        <button (click)="onRejectInvite(team.id_user, team.id_team)" class="btn btn-danger" type="button">Reject</button>
+<div class="btn-group nu-notification" dropdown>
+  <div dropdownToggle class="nu-notification__icon" [ngClass]="{ 'text-gray-500': !members.length }">
+    <i class="fas fa-bell"></i>
+    <div *ngIf="members.length > 0" class="nu-notification__badge">{{ members.length }}</div>
+  </div>  
+  <div *dropdownMenu class="dropdown-menu nu-notification__dropdown">
+
+    <!-- Teams loop -->
+    <div *ngFor="let team of members" class="nu-notification__item">
+      <div class="nu-notification__intro">
+        <div *ngIf="team.inviting_data" class="nu-notification__img"><img [src]="team.inviting_data.photo" alt="photo"></div>
+        {{ team.inviting_data ? team.inviting_data.username : 'someone' }} invite you to join:
+      </div>
+      <div class="nu-notification__content row no-gutters">
+        <div class="col"><div class="nu-notification__title">{{ team.team.name }}</div></div>
+        <div class="col-auto"><div (click)="onAcceptInvite(team._id_member, team.id_team)" class="nu-notification__btn nu-notification__btn--accept"><i class="fas fa-check"></i></div></div>
+        <div class="col-auto"><div (click)="onRejectInvite(team.id_user, team.id_team)" class="nu-notification__btn nu-notification__btn--reject"><i class="fas fa-times"></i></div></div>
+      </div> 
     </div>
+
+    <div *ngIf="!members.length" class="nu-notification__empty">
+      <i class="fas fa-hand-spock"></i>
+      <div>nothing new...</div>
+    </div>
+
   </div>
 </div>

@@ -2,10 +2,12 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AlertService } from '../../services/alert.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { inOut } from '../../utils/animation';
 
 @Component({
   selector: 'app-alert',
-  templateUrl: './alert.component.html'
+  templateUrl: './alert.component.html',
+  animations: [inOut]
 })
 export class AlertComponent implements OnInit, OnDestroy {
   private unsubscribe = new Subject<void>();

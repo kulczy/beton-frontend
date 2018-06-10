@@ -1,24 +1,27 @@
-<div *ngIf="!isLoading">
-    <h1>Teams</h1>
-    <button routerLink="/app/teams/add" class="btn btn-success" type="button">Add new team</button>
-    
-    <div class="container">
-      <div class="row">
-        <div *ngFor="let team of teams" class="col-3 mb-3">
-          <div class="card">
-            <div [routerLink]="['./team', team.team.url]" class="card-body">
-                {{ team.team.name }}
-                <p><small>ID: {{ team._id_member }}</small></p>
-                <p><small>join: {{ team.join_at }}</small></p>
-                <p>
-                  <small>{{ team.is_member ? 'jest memberem' : 'nie jest memberem' }}</small>
-                  <small *ngIf="team.is_admin"> __ *admin</small>
-                </p>
-            </div>
-          </div>
+<app-header title="Teams">
+  <a routerLink="/app/teams/add" class="btn btn-round btn-primary btn-lg d-none d-lg-block">
+    Add team
+  </a>
+</app-header>
+
+<div *ngIf="!isLoading" class="container">        
+    <div class="row" [@listIn]="teams.length">
+      <div *ngFor="let team of teams" class="col-12 col-sm-6 col-lg-4 mb-4">
+
+        <div [routerLink]="['./team', team.team.url]" class="card nu-teams">
+          <div class="nu-teams__icon nu-teams__icon--admin" *ngIf="team.is_admin"><i class="fas fa-user-secret"></i></div>
+          <div class="nu-teams__icon" *ngIf="!team.is_admin"><i class="fas fa-users"></i></div>
+          <div class="nu-teams__name">{{ team.team.name }}</div>
+          <div class="nu-teams__join">{{ displayJoin(team.join_at) }}</div>
+          <div class="nu-teams__enter d-none d-md-block"><i class="fas fa-long-arrow-alt-right"></i></div>        
         </div>
+
       </div>
     </div>
     
     <router-outlet></router-outlet>
 </div>
+
+<a class="fixed-add" routerLink="/app/teams/add">
+  <i class="fas fa-plus"></i>
+</a>

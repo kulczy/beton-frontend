@@ -1,4 +1,14 @@
-<ng-container *ngIf="user">
-  <img src="{{ user.photo }}" alt="{{ user.username }}" width="30">
-  <span routerLink="/app/account">{{ user.username }}</span>
+<ng-container *ngIf="user">  
+  <div class="btn-group nu-user-menu" dropdown>
+    <div dropdownToggle class="d-flex align-items-center nu-user-menu__btn">
+      <span class="d-none d-md-block mr-3">{{ user.username }}</span>
+      <span><img class="rounded-circle" src="{{ user.photo }}" alt="{{ user.username }}" width="30"></span>
+    </div>
+    <ul *dropdownMenu class="dropdown-menu dropdown-menu-right">
+      <li><a class="dropdown-item" routerLink="/app/account">Account</a></li>
+      <li class="divider dropdown-divider"></li>
+      <li><a class="dropdown-item" href="/byebye" (click)="onLogout($event)">Logout</a>
+      </li>
+    </ul>
+  </div>
 </ng-container>

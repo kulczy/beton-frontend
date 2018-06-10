@@ -1,4 +1,4 @@
-<div *ngIf="visible" style="position: fixed; right: 10px; bottom: 10px; max-width: 400px;">
+<div *ngIf="visible" class="alert-wrapper" [@inOut]>
   <div class="alert alert-{{ type }}" role="alert">
     {{ msg }}
     <button (click)="onClose()" type="button" class="close" >

@@ -1,18 +1,21 @@
+<div *ngFor="let member of members" class="scorble__score">
 
-  <div *ngFor="let member of members" style="display: inline-block; width: 250px; padding: 0 30px">
+  <!-- If can edit type -->
+  <app-type *ngIf="currentMember.user._id_user === member.user._id_user && !timerService.isClosed" 
+    [type]="getType(member.user._id_user)" 
+    [teamID]="teamID" 
+    [gameID]="game._id_game" 
+    [memberID]="member._id_member">
+  </app-type>
 
-    <!-- If can edit type -->
-    <app-type *ngIf="currentMember.user._id_user === member.user._id_user && !timerService.isClosed" 
-      [type]="getType(member.user._id_user)" 
-      [teamID]="teamID" 
-      [gameID]="game._id_game" 
-      [memberID]="member._id_member">
-    </app-type>
-  
-    <!-- Only display type -->
-    <div *ngIf="currentMember.user._id_user !== member.user._id_user || currentMember.user._id_user === member.user._id_user && timerService.isClosed">
-      <div [ngClass]="{'bg-success': isWinner(member.user._id_user)}">
-          {{ displayType(member.user._id_user) }}
-      </div>
+  <!-- Only display type -->
+  <div *ngIf="currentMember.user._id_user !== member.user._id_user || 
+              currentMember.user._id_user === member.user._id_user && 
+              timerService.isClosed">
+    
+    <div class="scorable__type" [ngClass]="{'scorable__type--winner': isWinner(member.user._id_user)}">
+      {{ displayType(member.user._id_user) }}<br>
     </div>
+
   </div>
+</div>

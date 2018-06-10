@@ -90,9 +90,9 @@
     "@angular-devkit/core" "0.6.1"
     rxjs "^6.0.0"
 
-"@angular/animations@^6.0.0":
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-6.0.1.tgz#21fd5b059765b48c9823e05cfe470ccdd816e8b1"
+"@angular/animations@^6.0.4":
+  version "6.0.4"
+  resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-6.0.4.tgz#4e22612e8fed3193983d985c748514a03404bd96"
   dependencies:
     tslib "^1.9.0"
 
@@ -3912,6 +3912,10 @@ neo-async@^2.5.0:
 next-tick@1:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.0.0.tgz#ca86d1fe8828169b0120208e3dc8424b9db8342c"
+
+ng2-sticky-kit@^5.3.0:
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/ng2-sticky-kit/-/ng2-sticky-kit-5.3.0.tgz#05db75a60790fe632adeafd9f8c2ae7547677b50"
 
 ngx-bootstrap@^3.0.0:
   version "3.0.0"
