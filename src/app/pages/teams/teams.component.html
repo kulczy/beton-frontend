@@ -5,8 +5,9 @@
 </app-header>
 
 <div *ngIf="!isLoading" class="container">        
-    <div class="row" [@listIn]="teams.length">
-      <div *ngFor="let team of teams" class="col-12 col-sm-6 col-lg-4 mb-4">
+    <div class="row" [@listIn]="teams.length" *ngIf="teams.length">
+      <div *ngFor="let team of teams" 
+        [ngClass]="{'col-12 col-sm-6 col-lg-4 mb-4' : teams.length > 2, 'col-12 col-sm-6' : teams.length === 2, 'col-12' : teams.length === 1}">
 
         <div [routerLink]="['./team', team.team.url]" class="card nu-teams">
           <div class="nu-teams__icon nu-teams__icon--admin" *ngIf="team.is_admin"><i class="fas fa-user-secret"></i></div>
@@ -16,6 +17,16 @@
           <div class="nu-teams__enter d-none d-md-block"><i class="fas fa-long-arrow-alt-right"></i></div>        
         </div>
 
+      </div>
+    </div>
+
+    <!-- No teams -->
+    <div *ngIf="!teams.length" class="text-size-lg text-center text-muted">
+      You're not a member of any team <i class="far fa-frown"></i>
+      <div class="mt-5">
+        <a routerLink="/app/teams/add" class="btn btn-round btn-primary btn-lg">
+          Create your first team
+        </a>
       </div>
     </div>
     

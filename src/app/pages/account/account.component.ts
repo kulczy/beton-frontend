@@ -45,7 +45,7 @@ export class AccountComponent implements OnInit, OnDestroy {
       .getUserByID(this.authService.getUserID())
       .pipe(takeUntil(this.unsubscribe))
       .subscribe((resp) => {
-        this.user = resp;
+        this.user = resp.user;
         this.formControl.patchValue({
           name: this.user.username,
           public: this.user.is_public === 1 ? true : false

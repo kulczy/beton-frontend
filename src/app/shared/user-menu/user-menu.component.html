@@ -2,7 +2,9 @@
   <div class="btn-group nu-user-menu" dropdown>
     <div dropdownToggle class="d-flex align-items-center nu-user-menu__btn">
       <span class="d-none d-md-block mr-3">{{ user.username }}</span>
-      <span><img class="rounded-circle" src="{{ user.photo }}" alt="{{ user.username }}" width="30"></span>
+      <div class="round-photo">
+        <img [src]="user.photo" [alt]="user.username">
+      </div>
     </div>
     <ul *dropdownMenu class="dropdown-menu dropdown-menu-right">
       <li><a class="dropdown-item" routerLink="/app/account">Account</a></li>
