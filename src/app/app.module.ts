@@ -58,6 +58,7 @@ import { UserMenuComponent } from './shared/user-menu/user-menu.component';
 import { AlertComponent } from './shared/alert/alert.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { TeamStatisticsComponent } from './pages/team-statistics/team-statistics.component';
+import { PreloaderComponent } from './shared/preloader/preloader.component';
 
 
 @NgModule({
@@ -83,7 +84,8 @@ import { TeamStatisticsComponent } from './pages/team-statistics/team-statistics
     UserMenuComponent,
     AlertComponent,
     HeaderComponent,
-    TeamStatisticsComponent
+    TeamStatisticsComponent,
+    PreloaderComponent
   ],
   imports: [
     BrowserModule,
