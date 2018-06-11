@@ -1,8 +1,8 @@
 <form [formGroup]="formControl" (ngSubmit)="onSubmit()">
   <div class="nu-type-edit">
     <div class="input-group nu-type-edit__inputs">
-      <input class="form-control form-control nu-type-edit__input" formControlName="type_a">
-      <input class="form-control nu-type-edit__input" formControlName="type_b">
+      <input class="form-control form-control nu-type-edit__input" formControlName="type_a" type="number">
+      <input class="form-control nu-type-edit__input" formControlName="type_b" type="number">
     </div>
 
     <div *ngIf="showSubmit && formControl.valid" class="nu-type-edit__button">

@@ -7,6 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { TeamStoreService } from '../../../services/team.store.service';
 import { AlertService } from '../../../services/alert.service';
+import { AppInfoService } from '../../../services/appinfo.service';
 
 @Component({
   selector: 'app-team-edit-card',
@@ -23,7 +24,8 @@ export class TeamEditCardComponent implements OnInit, OnDestroy {
     private teamApiService: TeamApiService,
     private teamStoreService: TeamStoreService,
     private router: Router,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private appInfoService: AppInfoService
   ) {}
 
   ngOnInit(): void {
@@ -51,9 +53,26 @@ export class TeamEditCardComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.unsubscribe))
         .subscribe((resp) => {
           this.isLoading = false;
+
+          // Update team name in store
           this.teamStoreService.updateTeam({
             name: this.formControl.controls.name.value
           });
+
+          // Update breadcrumps
+          this.appInfoService.setBreadcrumps([
+            {
+              title: 'Teams',
+              isActive: false,
+              link: '/app'
+            },
+            {
+              title: this.formControl.controls.name.value,
+              isActive: true,
+              link: null
+            }
+          ]);
+
           this.alertService.showAlert('teamUpdated');
         });
     }

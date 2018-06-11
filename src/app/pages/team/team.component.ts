@@ -91,14 +91,20 @@ export class TeamComponent implements OnInit, OnDestroy {
   /**
    * Leave current team (delete member record from db)
    */
-  onLeaveTeam(): void {
-    this.memberApiService
-      .deleteMember(this.authService.getUserID(), this.team._id_team)
-      .pipe(takeUntil(this.unsubscribe))
-      .subscribe((resp) => {
-        // console.log(`you leave ${this.team.name} team`);
-      });
+  onLeaveTeam(e): void {
+    e.preventDefault();
+    const conf = confirm(
+      'Are you sure you want to leave the team? All your types will be permanently deleted.'
+    );
+    if (conf === true) {
+      this.memberApiService
+        .deleteMember(this.authService.getUserID(), this.team._id_team)
+        .pipe(takeUntil(this.unsubscribe))
+        .subscribe((resp) => {
+          // console.log(`you leave ${this.team.name} team`);
+        });
 
-    this.alertService.showAlert('memberLeave');
+      this.alertService.showAlert('memberLeave');
+    }
   }
 }

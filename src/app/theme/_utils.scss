@@ -39,7 +39,7 @@
   }
 
   .active {
-    color: $gray-200;
+    color: $gray-100;
   }
 }
 
@@ -183,4 +183,28 @@ input:-webkit-autofill:active {
   overflow: hidden;
   box-shadow: $nu-card-shadow-strong;
   img { width: 100%; }
+}
+
+// Hide spinners in number inputs
+input[type=number] {  -moz-appearance: textfield; }
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+// Nav arrows
+.nav-link:not(:last-child) {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 25%;
+    right: -6px;
+    display: inline-block;
+    background: rgba($gray-600, 0.8);
+    height: 50%;
+    width: 1px;    
+  }
 }

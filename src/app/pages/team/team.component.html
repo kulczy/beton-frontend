@@ -2,16 +2,16 @@
   <app-header [title]="team && team.name" [back]="true" [container]="false">
     <nav class="nav justify-content-center nu-inverse">
       <a class="nav-link" routerLink="./" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-        <i class="fas fa-trophy text-gray-600"></i> Games
+        <i class="fas fa-trophy text-gray-600"></i> <span class="d-none d-sm-inline">Games</span>
       </a>
       <a class="nav-link" routerLink="./statistics" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-        <i class="fas fa-chart-pie text-gray-600"></i> Statistics
+        <i class="fas fa-chart-pie text-gray-600"></i> <span class="d-none d-sm-inline">Statistics</span>
       </a>
       <a class="nav-link" *ngIf="currentMember.is_admin" routerLink="./edit" routerLinkActive="active">
-        <i class="fas fa-sliders-h text-gray-600"></i> Settings
+        <i class="fas fa-sliders-h text-gray-600"></i> <span class="d-none d-sm-inline">Settings</span>
       </a>
-      <a class="nav-link" *ngIf="!currentMember.is_admin" (click)="onLeaveTeam()">
-        <i class="fas fa-sign-out-alt text-gray-600"></i> Leave the team
+      <a class="nav-link" *ngIf="!currentMember.is_admin" (click)="onLeaveTeam($event)" href="#">
+        <i class="fas fa-sign-out-alt text-gray-600"></i> <span class="d-none d-sm-inline">Leave</span>
       </a>
     </nav>
   </app-header>
