@@ -15,7 +15,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class GameInfoComponent implements OnInit, OnDestroy {
   private unsubscribe = new Subject<void>();
   game: Game;
-  timerService;
+  timeS = null;
   @Input() currentMember: Member;
   @Input()
   set gameData(game: Game) {
@@ -24,14 +24,14 @@ export class GameInfoComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    private timerServ: TimerService,
+    private timerService: TimerService,
     private teamStoreService: TeamStoreService,
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.timerService = this.timerServ;
+    this.timeS = this.timerService;
     // Subscribe to observable
     // triggered when counting games close
     this.timerService

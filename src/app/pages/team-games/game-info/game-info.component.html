@@ -1,12 +1,12 @@
-<div class="scorble__info">
+<div *ngIf="timeS" class="scorble__info">
 
   <!-- Type or timer -->
-  <div class="scorble__info__content" (click)="onEdit()" [ngClass]="{'scorble__info__content--editable': currentMember.user._id_user === game.creator_id && !timerService.isClosed || currentMember.is_admin}">
-    <div class="scorable__type scorable__type--closed" *ngIf="timerService.isClosed">
+  <div class="scorble__info__content" (click)="onEdit()" [ngClass]="{'scorble__info__content--editable': currentMember.user._id_user === game.creator_id && !timeS.isClosed || currentMember.is_admin}">
+    <div class="scorable__type scorable__type--closed" *ngIf="timeS.isClosed">
       {{ game.score_a }} : {{ game.score_b }}
     </div>
-    <div class="scorable__type" *ngIf="!timerService.isClosed">
-      {{ timerService.clock }}
+    <div class="scorable__type" *ngIf="!timeS.isClosed">
+      {{ timeS.clock }}
     </div>
   </div>
 
@@ -17,6 +17,6 @@
   </div>
   
   <!-- Edit -->      
-  <div class="scorble__info__edit" *ngIf="currentMember.user._id_user === game.creator_id && !timerService.isClosed && !currentMember.is_admin"></div>
+  <div class="scorble__info__edit" *ngIf="currentMember.user._id_user === game.creator_id && !timeS.isClosed && !currentMember.is_admin"></div>
 </div>
 
