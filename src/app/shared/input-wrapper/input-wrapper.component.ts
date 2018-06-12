@@ -13,7 +13,7 @@ import { Component, Input } from '@angular/core';
   `
 })
 export class InputWrapperComponent {
-  @Input() value: string;
+  @Input() value;
   @Input() label: string;
   @Input() errorMsg: string;
 

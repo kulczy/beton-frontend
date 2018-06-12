@@ -18,8 +18,8 @@ import { AppInfoService } from '../../services/appinfo.service';
 export class TeamComponent implements OnInit, OnDestroy {
   private unsubscribe = new Subject<void>();
   private teamURL = new ReplaySubject<string>(null);
-  private team: Team;
   private currentMember: Member;
+  team: Team;
 
   constructor(
     private activatedRoute: ActivatedRoute,
