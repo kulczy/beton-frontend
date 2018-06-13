@@ -84,7 +84,7 @@ export class AuthService {
         return [false]; // Return false if user cancel FB login
       }),
       switchMap((FB_response: LoginResponse) => {
-        return FB_response
+        return FB_response && FB_response.authResponse.grantedScopes.split(',').indexOf('email') !== -1
           ? this.callApi(FB_response.authResponse.accessToken)
           : [false];
       }),

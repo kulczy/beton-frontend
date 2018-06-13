@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  serverPath: 'http://vps409197.ovh.net:3000/',
+  serverPath: 'https://betonello.herokuapp.com/',
   apiPath: 'v1/api/',
-  basePath: 'http://vps409197.ovh.net:3000/'
+  basePath: 'https://betonello.herokuapp.com/'
 };
