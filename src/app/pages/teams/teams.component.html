@@ -7,7 +7,7 @@
 <div *ngIf="!isLoading" class="container">        
     <div class="row" [@listIn]="teams.length" *ngIf="teams.length">
       <div *ngFor="let team of teams" 
-        [ngClass]="{'col-12 col-sm-6 col-lg-4 mb-4' : teams.length > 2, 'col-12 col-sm-6' : teams.length === 2, 'col-12' : teams.length === 1}">
+        [ngClass]="{'col-12 col-sm-6 col-lg-4 mb-4' : teams.length > 2, 'col-12 col-sm-6 mb-4' : teams.length === 2, 'col-12 mb-4' : teams.length === 1}">
 
         <div [routerLink]="['./team', team.team.url]" class="card nu-teams">
           <div class="nu-teams__icon nu-teams__icon--admin" *ngIf="team.is_admin"><i class="fas fa-user-secret"></i></div>
