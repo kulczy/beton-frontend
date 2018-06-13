@@ -7,8 +7,8 @@
 
     <div *ngIf="showSubmit && formControl.valid" class="nu-type-edit__button">
       <button [disabled]="!formControl.valid" type="submit" class="btn btn-primary btn-round btn-sm">
-        <i *ngIf="!isLoading" class="fas fa-check"></i>
-        <i *ngIf="isLoading" class="fas fa-spinner"></i>
+        <span *ngIf="!isLoading">SAVE</span>
+        <span *ngIf="isLoading">...</span>
       </button>
     </div>    
   </div>
