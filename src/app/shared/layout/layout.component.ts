@@ -88,6 +88,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.unsubscribe.next();
     this.unsubscribe.complete();
     this.memberSocketService.socketDisconnect();
+    this.appinfoService.clearInterval();
   }
 
   onLogout(): void {

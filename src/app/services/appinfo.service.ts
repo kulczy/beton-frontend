@@ -12,6 +12,7 @@ interface Breadcrumps {
 export class AppInfoService {
   private breadcrumps: BehaviorSubject<Breadcrumps[]>;
   private appDate$: BehaviorSubject<Date>;
+  private interval: any;
 
   constructor(private titleService: Title) {
     this.breadcrumps = new BehaviorSubject(null);
@@ -33,9 +34,12 @@ export class AppInfoService {
    * @param date server time in UTC
    */
   setDate(date): void {
+    // Clear old interval if exist
+    this.clearInterval();
+
     this.appDate$.next(new Date(date));
 
-    setInterval(() => {
+    this.interval = setInterval(() => {
       const currentValue = this.appDate$.getValue();
       currentValue.setSeconds(currentValue.getSeconds() + 1);
       this.appDate$.next(currentValue);
@@ -54,5 +58,12 @@ export class AppInfoService {
    */
   appDate(): Date {
     return this.appDate$.getValue();
+  }
+
+  /**
+   * Clear timer interval
+   */
+  public clearInterval(): void {
+    clearInterval(this.interval);
   }
 }
