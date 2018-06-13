@@ -6,7 +6,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { APP_BASE_HREF } from '@angular/common';
 import { FacebookModule } from 'ngx-facebook';
-import { environment } from '../environments/environment';
 
 // Routes
 import { baseRoutes } from './app.routes';
@@ -104,7 +103,6 @@ import { PreloaderComponent } from './shared/preloader/preloader.component';
     // ChartsModule
   ],
   providers: [
-    { provide: APP_BASE_HREF, useValue: environment.basePath },
     AuthService,
     AppInfoService,
     AlertService,

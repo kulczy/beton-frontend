@@ -5,8 +5,7 @@
 export const environment = {
   production: false,
   serverPath: 'http://localhost:3000/',
-  apiPath: 'v1/api/',
-  basePath: '/'
+  apiPath: 'v1/api/'
 };
 
 /*
