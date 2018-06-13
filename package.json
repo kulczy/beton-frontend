@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --prod --base-href http://vps409197.ovh.net:3000/ --output-path ../beton-backend/public",
+    "build": "ng build --prod --base-href https://betonello.herokuapp.com/ --output-path ../beton-backend/public",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
