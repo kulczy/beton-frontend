@@ -1,12 +1,12 @@
 import { InitParams, LoginOptions } from 'ngx-facebook';
+import { environment } from '../environments/environment';
 
 // Name of token in local storage
 export const LOCALSTORAGE_TOKEN_KEY = 'beton:token';
 
 // API paths
-const SERVER_PATH = 'http://vps409197.ovh.net:3000/';
-// const SERVER_PATH = 'http://localhost:3000/';
-const API_PATH = SERVER_PATH + 'v1/api/';
+const SERVER_PATH = environment.serverPath;
+const API_PATH = SERVER_PATH + environment.apiPath;
 export { SERVER_PATH, API_PATH };
 
 // Facebook App Params

@@ -4,7 +4,9 @@ import { RouterModule } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { APP_BASE_HREF } from '@angular/common';
 import { FacebookModule } from 'ngx-facebook';
+import { environment } from '../environments/environment';
 
 // Routes
 import { baseRoutes } from './app.routes';
@@ -60,7 +62,6 @@ import { HeaderComponent } from './shared/header/header.component';
 import { TeamStatisticsComponent } from './pages/team-statistics/team-statistics.component';
 import { PreloaderComponent } from './shared/preloader/preloader.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -99,10 +100,11 @@ import { PreloaderComponent } from './shared/preloader/preloader.component';
     FacebookModule.forRoot(),
     BsDatepickerModule.forRoot(),
     TimepickerModule.forRoot(),
-    BsDropdownModule.forRoot(),
+    BsDropdownModule.forRoot()
     // ChartsModule
   ],
   providers: [
+    { provide: APP_BASE_HREF, useValue: environment.basePath },
     AuthService,
     AppInfoService,
     AlertService,
