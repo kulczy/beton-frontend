@@ -24,7 +24,7 @@ export class TimerService {
     // Clear old interval if exist
     this.clearInterval();
 
-    // Clear close  trigger
+    // Clear close trigger
     this.closeNow.next(null);
 
     // Set close date
@@ -48,14 +48,23 @@ export class TimerService {
    * Timer interval
    */
   private _setInterval() {
+    let intervalTimes = 0;
+
     return setInterval(() => {
       this.dateDiff = this.dateDiff - 1;
+      intervalTimes++;
 
+      // Action if games become closed
       if (this.dateDiff < 0) {
         this.isClosed = true;
         this.clearInterval();
         // Trigger close events
         this.closeNow.next(true);
+      }
+
+      // Reinit timer every 5 minutes
+      if (intervalTimes > 10) {
+        this.setGameTime(this.closeAt);
       }
     }, 1000);
   }
