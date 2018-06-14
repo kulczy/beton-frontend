@@ -12,6 +12,7 @@ import { AlertService } from '../../../services/alert.service';
 })
 export class TypeComponent implements OnInit, OnDestroy {
   private unsubscribe = new Subject<void>();
+  isLoading: boolean;
   formControl: FormGroup;
   originalType: Type;
   originalTypeA: string;
@@ -88,6 +89,7 @@ export class TypeComponent implements OnInit, OnDestroy {
 
   onSubmit(): void {
     if (this.formControl.valid) {
+      this.isLoading = true;
       // Create new type data object
       const newType: Type = {
         type_a: Number(this.formControl.controls.type_a.value),
@@ -104,6 +106,7 @@ export class TypeComponent implements OnInit, OnDestroy {
           .updateType(this.originalType._id_type, newType)
           .pipe(takeUntil(this.unsubscribe))
           .subscribe((resp) => {
+            this.isLoading = false;
             this.alertService.showAlert('typeUpdated');
           });
       } else {
@@ -112,6 +115,7 @@ export class TypeComponent implements OnInit, OnDestroy {
           .addType(newType)
           .pipe(takeUntil(this.unsubscribe))
           .subscribe((resp) => {
+            this.isLoading = false;
             this.alertService.showAlert('typeUpdated');
           });
       }

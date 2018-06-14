@@ -18,7 +18,8 @@
 
           <div class="mt-5">
             <button [disabled]="!formControl.valid" type="submit" class="btn btn-primary">
-              {{ isLoading ? 'loading...' : 'Save changes' }}
+              <ng-container *ngIf="isLoading"><i class="fas fa-spinner anim"></i></ng-container>
+              <ng-container *ngIf="!isLoading">Save changes</ng-container>
             </button>
             <button (click)="onDelete()" class="btn btn-link text-danger ml-3" type="button">Delete account</button>
           </div>
@@ -28,3 +29,6 @@
     </div>
   </div>
 </div>
+
+
+<app-preloader *ngIf="isLoadingContent"></app-preloader>

@@ -1,15 +1,14 @@
 <form [formGroup]="formControl" (ngSubmit)="onSubmit()">
-  <div class="nu-type-edit">
+  <div class="nu-type-edit" [ngClass]="{'is-loading' : isLoading}">
     <div class="input-group nu-type-edit__inputs">
       <input class="form-control form-control nu-type-edit__input" formControlName="type_a" type="number">
       <input class="form-control nu-type-edit__input" formControlName="type_b" type="number">
     </div>
 
-    <div *ngIf="showSubmit && formControl.valid" class="nu-type-edit__button">
-      <button [disabled]="!formControl.valid" type="submit" class="btn btn-primary btn-round btn-sm">
-        <span *ngIf="!isLoading">SAVE</span>
-        <span *ngIf="isLoading">...</span>
-      </button>
+    <div *ngIf="showSubmit && formControl.valid && !isLoading" class="nu-type-edit__button">
+      <button [disabled]="!formControl.valid" type="submit" class="btn btn-primary btn-round btn-sm">SAVE</button>
     </div>    
+
+    <div *ngIf="isLoading" class="nu-type-edit__spinner"><i class="fas fa-spinner anim text-primary"></i></div>
   </div>
 </form>

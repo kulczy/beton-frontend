@@ -208,3 +208,14 @@ input[type=number]::-webkit-inner-spin-button {
     width: 1px;    
   }
 }
+
+// Anim spinner
+.fa-spinner.anim {
+  animation-name: spinner-anim;
+  animation-duration: .5s;
+  animation-iteration-count: infinite;
+}
+@keyframes spinner-anim {
+  from { transform: rotate(0); }
+  to { transform: rotate(360deg); }
+}

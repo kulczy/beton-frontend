@@ -18,6 +18,7 @@ export class AccountComponent implements OnInit, OnDestroy {
   private unsubscribe = new Subject<void>();
   formControl: FormGroup;
   isLoading: boolean;
+  isLoadingContent: boolean;
   user: User;
 
   constructor(
@@ -40,11 +41,14 @@ export class AccountComponent implements OnInit, OnDestroy {
       public: true
     });
 
+    this. isLoadingContent = true;
+
     // Get user data
     this.userApiService
       .getUserByID(this.authService.getUserID())
       .pipe(takeUntil(this.unsubscribe))
       .subscribe((resp) => {
+        this.isLoadingContent = false;
         this.user = resp.user;
         this.formControl.patchValue({
           name: this.user.username,

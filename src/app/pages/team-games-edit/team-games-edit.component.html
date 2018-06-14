@@ -44,8 +44,11 @@
         <div class="modal-body">
           <div class="row justify-content-end no-gutters">
             <div *ngIf="gameID" class="col"><button (click)="onDelete()" type="button" class="btn btn-link text-danger">Delete</button></div>
-            <div class="col-auto"><button [routerLink]="['/app/team', teamURL]" type="button" class="btn btn-link">Close</button></div>
-            <div class="col-auto"><button [disabled]="!formControl.valid" type="submit" class="btn btn-primary">{{ isLoading ? 'loading...' : 'Save changes' }}</button></div>
+            <div class="col-auto"><button [routerLink]="['/app/team', teamURL]" type="button" class="btn btn-link mr-2">Close</button></div>
+            <div class="col-auto"><button [disabled]="!formControl.valid" type="submit" class="btn btn-primary">
+              <ng-container *ngIf="isLoading"><i class="fas fa-spinner anim"></i></ng-container>
+              <ng-container *ngIf="!isLoading">Save</ng-container>
+            </button></div>
           </div>
         </div>
     </form>

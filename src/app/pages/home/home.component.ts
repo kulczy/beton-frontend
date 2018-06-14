@@ -11,6 +11,7 @@ import { takeUntil } from 'rxjs/operators';
 export class HomeComponent implements OnInit, OnDestroy {
   private unsubscribe = new Subject<void>();
   isLoggedIn = false;
+  isLoading = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -24,10 +25,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   login(): void {
+    this.isLoading = true;
+
     this.authService
       .login()
       .pipe(takeUntil(this.unsubscribe))
       .subscribe((resp: boolean) => {
+        this.isLoading = false;
         if (resp) {
           this.router.navigate(['/app']);
         }

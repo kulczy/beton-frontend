@@ -18,7 +18,8 @@
           <div class="modal-footer">
             <button routerLink="/app" type="button" class="btn btn-link">Close</button>
             <button [disabled]="!formControl.valid" type="submit" class="btn btn-primary">
-              {{ isLoading ? 'loading...' : 'Save changes' }}
+              <ng-container *ngIf="isLoading"><i class="fas fa-spinner anim"></i></ng-container>
+              <ng-container *ngIf="!isLoading">Add team</ng-container>
             </button>
           </div>
         </form>

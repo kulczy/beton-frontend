@@ -1,5 +1,8 @@
 <div class="text-center mt-5">
-  <button *ngIf="!isLoggedIn" (click)="login()" class="btn btn-primary btn-lg mt-5">facebook login</button>
+  <button *ngIf="!isLoggedIn" (click)="login()" class="btn btn-primary btn-lg mt-5">
+    <ng-container *ngIf="isLoading"><i class="fas fa-spinner anim"></i></ng-container>
+    <ng-container *ngIf="!isLoading">facebook login</ng-container>
+  </button>
   <button *ngIf="isLoggedIn" routerLink="/app" class="btn btn-outline-primary btn-lg mt-5">enter</button>
   <div class="mt-3 text-muted">The app is in beta version.<br>Ask for permission before registration.</div>
 </div>
