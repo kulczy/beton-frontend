@@ -63,7 +63,7 @@ export class TimerService {
       }
 
       // Reinit timer every 5 minutes
-      if (intervalTimes > 10) {
+      if (intervalTimes > 119) {
         this.setGameTime(this.closeAt);
       }
     }, 1000);
