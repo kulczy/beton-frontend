@@ -107,7 +107,15 @@ export class TypeComponent implements OnInit, OnDestroy {
           .pipe(takeUntil(this.unsubscribe))
           .subscribe((resp) => {
             this.isLoading = false;
-            this.alertService.showAlert('typeUpdated');
+            if (resp) {
+              this.alertService.showAlert('typeUpdated');
+            } else {
+              this.alertService.showAlert('typeNotUpdated');
+              this.formControl.patchValue({
+                type_a: this.originalTypeA,
+                type_b: this.originalTypeB
+              });
+            }
           });
       } else {
         // Add new type
@@ -116,7 +124,15 @@ export class TypeComponent implements OnInit, OnDestroy {
           .pipe(takeUntil(this.unsubscribe))
           .subscribe((resp) => {
             this.isLoading = false;
-            this.alertService.showAlert('typeUpdated');
+            if (resp) {
+              this.alertService.showAlert('typeUpdated');
+            } else {
+              this.alertService.showAlert('typeNotUpdated');
+              this.formControl.patchValue({
+                type_a: null,
+                type_b: null
+              });
+            }
           });
       }
     }

@@ -53,6 +53,10 @@ const MESSAGES = {
   typeUpdated: {
     msg: 'Type updated successfully',
     type: 'success'
+  },
+  typeNotUpdated: {
+    msg: 'Type update error',
+    type: 'danger'
   }
 };
 
