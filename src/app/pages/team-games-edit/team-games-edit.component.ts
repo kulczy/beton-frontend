@@ -146,10 +146,10 @@ export class TeamGamesEditComponent implements OnInit, OnDestroy {
       id_team: this.teamID,
       player_a: this.formControl.controls.player_a.value,
       player_b: this.formControl.controls.player_b.value,
-      score_a: this.formControl.controls.score_a.value !== null
+      score_a: Number.isInteger(this.formControl.controls.score_a.value)
         ? Number(this.formControl.controls.score_a.value)
         : null,
-      score_b: this.formControl.controls.score_b.value !== null
+      score_b: Number.isInteger(this.formControl.controls.score_b.value)
         ? Number(this.formControl.controls.score_b.value)
         : null
     };
