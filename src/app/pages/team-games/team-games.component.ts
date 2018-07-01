@@ -9,6 +9,7 @@ import { TeamStoreService } from '../../services/team.store.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Team, Type, Member } from '../../models';
+import { TeamApiService } from '../../services/team.api.service';
 
 @Component({
   selector: 'app-team-games',
@@ -20,8 +21,13 @@ export class TeamGamesComponent
   team: Team;
   currentMember: Member;
   fixedHeaderLastMembersLength: number; // For fixed headers
+  showMoreButton = true;
+  showMoreButtonLoading = false;
 
-  constructor(private teamStoreService: TeamStoreService) {}
+  constructor(
+    private teamStoreService: TeamStoreService,
+    private teamApiService: TeamApiService
+  ) {}
 
   ngOnInit(): void {
     // Get team data from store
@@ -36,6 +42,21 @@ export class TeamGamesComponent
 
         this.team = newTeam;
         this.currentMember = resp.currentMember;
+      });
+  }
+
+  // Load more games
+  onLoadMoreGames(): void {
+    this.showMoreButtonLoading = true;
+    this.teamApiService
+      .getGames(this.team.url, this.teamStoreService.gamesIdList())
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe((resp) => {
+        if (resp.games.length < 10) {
+          this.showMoreButton = false;
+        }
+        this.teamStoreService.addGamesAndTypes(resp);
+        this.showMoreButtonLoading = false;
       });
   }
 

@@ -9,7 +9,10 @@ import { AppInfoService } from './appinfo.service';
 export class TeamStoreService {
   private team: BehaviorSubject<Team>;
 
-  constructor(private authService: AuthService, private appInfoService: AppInfoService) {
+  constructor(
+    private authService: AuthService,
+    private appInfoService: AppInfoService
+  ) {
     this.team = new BehaviorSubject(null);
   }
 
@@ -39,6 +42,14 @@ export class TeamStoreService {
    */
   getTeamURL(): string {
     return this.team.getValue().url;
+  }
+
+  /**
+   * Get list of games id's
+   */
+  gamesIdList() {
+    const team = Object.assign({}, this.team.getValue());
+    return team.games.map((game) => game._id_game);
   }
 
   /**
@@ -113,6 +124,39 @@ export class TeamStoreService {
   }
 
   /**
+   * Fill team by new games and types
+   * @param newTeamData
+   */
+  addGamesAndTypes(newTeamData) {
+    const team = Object.assign({}, this.team.getValue());
+
+    // Add types
+    for (const key of Object.keys(team.types)) {
+      if (key in newTeamData.types) {
+        team.types[key] = Object.assign(
+          {},
+          team.types[key],
+          newTeamData.types[key]
+        );
+      }
+    }
+
+    team.games = team.games.concat(newTeamData.games); // Add new games
+
+    team.games.sort((a, b) => a._id_game - b._id_game); // Sort games by ID
+    // Filter for duplicates
+    const newGames = team.games.filter(
+      (item, i) =>
+        team.games.length - 1 === i ||
+        item._id_game !== team.games[i + 1]._id_game
+    );
+    team.games = newGames;
+
+    team.games = this.sortGames(team.games); // Sort all games
+    this.team.next(team); // Set team
+  }
+
+  /**
    * Set new type data
    * @param type
    */
@@ -181,7 +225,9 @@ export class TeamStoreService {
 
     // Split games to open and slode
     games.forEach((g) => {
-      if (new Date(g.close_at).getTime() > this.appInfoService.appDate().getTime()) {
+      if (
+        new Date(g.close_at).getTime() > this.appInfoService.appDate().getTime()
+      ) {
         gamesOpen.push(g);
       } else {
         gamesClosed.push(g);

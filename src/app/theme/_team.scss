@@ -356,6 +356,21 @@ $scorble-row-height-head: 140px;
   }
 }
 
+.games-footer {
+  background: $gray-100;
+
+  .games-footer__btn {    
+    @media (min-width: $scorble-breakpoint) {
+      max-width: $scorble-left-width;
+    }
+  }
+
+  .btn { 
+    border-top-left-radius: 0; 
+    border-top-right-radius: 0; 
+  }
+}
+
 
 @include media-breakpoint-down(xs) {
   .nu-game-modal__close {

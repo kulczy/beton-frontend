@@ -86,4 +86,13 @@ export class TeamApiService {
       .delete(`${API_PATH}team/${teamID}`)
       .pipe(catchError((err, caught) => empty()));
   }
+
+  getGames(teamID, exclude): Observable<any> {
+    const params = new HttpParams()
+      .set('exclude', JSON.stringify(exclude));
+
+    return this.http
+      .get(`${API_PATH}fill_team/${teamID}`, { params })
+      .pipe(catchError((err, caught) => empty()));
+  }
 }

@@ -44,6 +44,14 @@
   
     </div>
   </div>
+  <div *ngIf="showMoreButton" (click)="onLoadMoreGames()" class="games-footer">
+    <div class="games-footer__btn">
+      <button class="btn btn-block btn-lg btn-primary" type="button">        
+        <ng-container *ngIf="showMoreButtonLoading"><i class="fas fa-spinner anim"></i></ng-container>
+        <ng-container *ngIf="!showMoreButtonLoading">load more</ng-container>
+      </button>
+    </div>
+  </div>
 </div>
 
 <a class="fixed-add" routerLink="./game">
