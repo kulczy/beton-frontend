@@ -8,15 +8,17 @@
           <div class="nu-statistics__info">
             <div class="nu-statistics__info__row" *ngFor="let member of stat.statistics">
               <div class="nu-statistics__user">
-                <div class="nu-statistics__name">{{ member.username }}</div>
-                <div class="round-photo">
-                  <img [src]="member.photo" alt="photo">
+                <div class="nu-statistics__name">
+                  {{ member.username }}
+                </div>
+                <div class="nu-statistics__stat">
+                  <span>w.</span>{{ member.wins }} 
+                  <span>g.</span>{{ member.games }} 
+                  <span>a.</span>{{ member.accuracy }}%
                 </div>
               </div>
-              <div class="nu-statistics__stat">
-                <span>win.</span>{{ member.wins }} 
-                <span>gam.</span>{{ member.games }} 
-                <span>acc.</span>{{ member.games > 0 ? ((member.wins / member.games) * 100).toFixed() : 0 }}%
+              <div class="round-photo">
+                <img [src]="member.photo" alt="photo">
               </div>
             </div>
           </div>
@@ -32,10 +34,44 @@
   </div>
 </div>
 
+<div class="container mb-4">
+  <div class="card">
+    <div class="card-body">
+      <div class="row nu-statistics">
+
+        <!-- Members info -->
+        <div class="col-7 col-md-4 col-lg-3 col-xl-2" *ngIf="stat">
+          <div class="nu-statistics__info">
+            <div class="nu-statistics__info__row" *ngFor="let member of stat.statistics">
+              <div class="nu-statistics__user">
+                <div class="nu-statistics__name">
+                  {{ member.username }}
+                </div>
+                <div class="nu-statistics__stat">
+                  <span>points:</span>{{ member.points }}
+                </div>
+              </div>
+              <div class="round-photo">
+                <img [src]="member.photo" alt="photo">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Graph -->
+        <div class="col-5 col-md-8 col-lg-9 col-xl-10">
+          <canvas id="points-chart"></canvas>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="container" *ngIf="stat">
   <div class="row">
 
-    <div class="col mb-4">
+    <div class="col-6 col-lg-3 mb-4">
       <div class="card">
         <div class="card-body text-center py-5">
           <div class="text-size-lg text-muted">{{ stat.info.totalGames }}</div>
@@ -44,7 +80,16 @@
       </div>
     </div>
 
-    <div class="col mb-4">
+    <div class="col-6 col-lg-3 mb-4">
+      <div class="card">
+        <div class="card-body text-center py-5">
+          <div class="text-size-lg text-muted">{{ stat.info.openGames }}</div>
+          <div class="card-text">Open games</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-6 col-lg-3 mb-4">
       <div class="card">
         <div class="card-body text-center py-5">
           <div class="text-size-lg text-muted">{{ stat.info.totalMembers }}</div>
@@ -53,11 +98,11 @@
       </div>
     </div>
 
-    <div class="col mb-4">
+    <div class="col-6 col-lg-3 mb-4">
       <div class="card">
         <div class="card-body text-center py-5">
           <div class="text-size-lg text-muted">{{ stat.info.created_at }}</div>
-          <div class="card-text">The team was created on</div>
+          <div class="card-text">Created</div>
         </div>
       </div>
     </div>
